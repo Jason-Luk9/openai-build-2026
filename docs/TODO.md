@@ -13,7 +13,7 @@ It is ordered so that factual accuracy and the deterministic rules engine land b
 
 ## Facts, schemas, and knowledge
 
-- [ ] Define strict Zod schemas for `Profile`, `PlaybookFacts`, and streamed narratives.
+- [ ] Define strict Zod schemas for `Profile`, `PlaybookFacts`, and streamed narratives; `Profile` must include the seven canonical intake data points (home country, industry, entity purpose, founders/staff relocating, projected Singapore revenue, and VC/IP/award evidence).
 - [ ] Add provenance-aware knowledge JSON for entities, COMPASS, licences, tax, banking, and country context.
 - [ ] Verify all regulatory facts against live Singapore government sources.
 - [ ] Specifically verify and encode the COMPASS small-firm rule: firms with fewer than 25 PMET employees receive neutral C3/C4 scores.

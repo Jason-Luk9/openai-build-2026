@@ -2,7 +2,7 @@
 
 ## Context
 
-SingaPath turns an ASEAN founder's 5-minute company profile into a complete Singapore market-entry playbook: entity structure, founder/staff visas (with COMPASS scoring), industry licensing, tax incentives, banking roadmap, and a week-by-week timeline with costs. This document turns the product spec and stack doc into an executable architecture with design and code conventions for the whole team.
+SingaPath turns an ASEAN founder's 5-minute company profile into a complete Singapore market-entry playbook: entity structure, founder/staff visas (with COMPASS scoring), industry licensing, tax incentives, banking roadmap, and a week-by-week timeline with costs. The canonical profile captures seven data points across five wizard steps: home country, industry, entity purpose, founders relocating, staff relocating, projected Singapore revenue, and EntrePass evidence (VC backing, IP, or awards). This document turns the product spec and stack doc into an executable architecture with design and code conventions for the whole team.
 
 Build starts from an empty repository (Node 20+ required for Next.js 15). Three decisions are locked:
 
@@ -18,7 +18,7 @@ Build starts from an empty repository (Node 20+ required for Next.js 15). Three 
 1. **The direction flip is the smartest thing in the spec.** ASEAN→SG collapses the data problem to one stable, English-language, authoritative jurisdiction. Say this in the pitch — judges reward teams who scoped away their biggest risk.
 2. **"Rules engine computes, LLM narrates" is the architecturally correct answer** for compliance-adjacent AI. When a judge asks "what about hallucinated regulations?", there's a real answer: the model never produces a number or requirement — it only explains precomputed facts.
 3. **Demo mechanics are strong**: one-click mock profile → streaming playbook in ~30s.
-4. **The COMPASS same-nationality diversity flag is the money moment** — a specific, counter-intuitive fact no generic chatbot surfaces. Script the demo around it.
+4. **The COMPASS same-nationality diversity flag is the money moment once a firm reaches 25 PMETs** — a specific, counter-intuitive fact no generic chatbot surfaces. Script the demo around its small-firm nuance.
 5. Real, quantifiable market (50–60K incorporations/yr) with obvious adjacent monetization (corp-sec firms, banks, EDB partnerships).
 
 ### Risks and fixes
@@ -169,7 +169,7 @@ repo root  (Next.js 15 scaffold, App Router, src dir, git init on day 1)
 1. Landing: "3–6 months of confusion → a 5-minute playbook." (15s)
 2. Click **VietStack** → wizard pre-filled, flip through two steps to prove the form is real → Generate. (30s)
 3. Facts render instantly; narratives stream in — talk over entity recommendation + timeline/cost. (45s)
-4. **Money moment**: COMPASS chart with the diversity criterion explained — "not because they're unqualified, because all three founders are Vietnamese" (with the correct small-firm nuance). Show the concrete fix. (45s)
+4. **Money moment**: COMPASS chart shows the small-firm default score, then explains that the same-nationality diversity flag applies once the firm reaches 25 PMETs — not because candidates are unqualified. Show the concrete fix. (45s)
 5. If chat shipped: "What if we hire one Singaporean engineer first?" → tool call → score updates live. (30s)
 6. Close on sources + last-verified stamps + PDF download. (15s)
 Backup: `?demo=1` offline mode; screen recording on standby.
