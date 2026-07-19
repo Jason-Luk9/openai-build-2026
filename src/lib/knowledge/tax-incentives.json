@@ -35,6 +35,16 @@
         "url": "https://www.iras.gov.sg/taxes/goods-services-tax-%28gst%29/gst-registration-deregistration/do-i-need-to-register-for-gst",
         "lastVerified": "2026-07-19"
       }
+    },
+    {
+      "id": "edb-development-expansion-incentive",
+      "label": "Development and Expansion Incentive (DEI)",
+      "value": "EDB-administered concessionary tax rate (5%, 10%, or 15%) on qualifying income from new or expanded economic activities, including regional/global HQ activities, conducted in Singapore.",
+      "description": "Approval is discretionary and requires an application to EDB; not an automatic entitlement.",
+      "source": {
+        "url": "https://www.edb.gov.sg/en/incentives-and-programmes/incentives-and-facilitation-programmes.html",
+        "lastVerified": "2026-07-19"
+      }
     }
   ],
   "industryOpportunities": {

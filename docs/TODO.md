@@ -13,12 +13,12 @@ It is ordered so that factual accuracy and the deterministic rules engine land b
 
 ## Facts, schemas, and knowledge
 
-- [ ] Define strict Zod schemas for `Profile`, `PlaybookFacts`, and streamed narratives; `Profile` must include the seven canonical intake data points (home country, industry, entity purpose, founders/staff relocating, projected Singapore revenue, and VC/IP/award evidence).
-- [ ] Add provenance-aware knowledge JSON for entities, COMPASS, licences, tax, banking, and country context.
-- [ ] Verify all regulatory facts against live Singapore government sources.
-- [ ] Specifically verify and encode the COMPASS small-firm rule: firms with fewer than 25 PMET employees receive neutral C3/C4 scores.
+- [x] Define strict Zod schemas for `Profile`, `PlaybookFacts`, and streamed narratives; `Profile` must include the seven canonical intake data points (home country, industry, entity purpose, founders/staff relocating, projected Singapore revenue, and VC/IP/award evidence).
+- [x] Add provenance-aware knowledge JSON for entities, COMPASS, licences, tax, banking, and country context.
+- [x] Verify all regulatory facts against live Singapore government sources. (ACRA S$315 incorporation fee, SFA S$195/yr Food Shop Licence, and the Indonesia/Vietnam DTA Article 11 10% interest caps were live re-verified this pass; EP salary floor, GST rate, corporate tax rate, COMPASS small-firm threshold, and EntrePass eligibility criteria were live-verified in the prior pass. Source set now also covers EDB (Development and Expansion Incentive) and a bank SME page (DBS foreign-owned-company account requirements), closing the two agency gaps from the ticket.)
+- [x] Specifically verify and encode the COMPASS small-firm rule: firms with fewer than 25 PMET employees receive neutral C3/C4 scores. (Both the 25-PMET threshold and the neutral 10-point score are now structured `RegulatoryFact`s in `compass.json`, not just prose.)
 - [ ] Add the three demo profiles: Warung Digital, VietStack, and PayFlip.
-- [ ] Add a knowledge-validation script that fails facts missing source URLs or last-verified dates.
+- [x] Add a knowledge-validation script that fails facts missing source URLs or last-verified dates. (`scripts/validate-knowledge.ts`, run via `pnpm run validate-knowledge`; logs every bundled fact's id/source/lastVerified as a superset verification log — full profile-scoping is pending the mock-profiles ticket.)
 
 ## Deterministic rules engine
 
