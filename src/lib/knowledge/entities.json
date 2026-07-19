@@ -1,0 +1,120 @@
+{
+  "entities": [
+    {
+      "purpose": "local-operations",
+      "recommendation": "Private company limited by shares",
+      "facts": [
+        {
+          "id": "acra-private-company-fee",
+          "label": "Company set-up fee",
+          "value": "S$315 (S$15 name application and S$300 incorporation)",
+          "source": {
+            "url": "https://www.acra.gov.sg/register/business/choosing-business-structure/",
+            "lastVerified": "2026-07-19"
+          }
+        },
+        {
+          "id": "acra-company-separate-legal-entity",
+          "label": "Company legal status",
+          "value": "A company is a separate legal entity with shareholder limited liability.",
+          "source": {
+            "url": "https://www.acra.gov.sg/register/business/choosing-business-structure/",
+            "lastVerified": "2026-07-19"
+          }
+        }
+      ]
+    },
+    {
+      "purpose": "regional-hq",
+      "recommendation": "Private company limited by shares",
+      "facts": [
+        {
+          "id": "acra-company-director-requirement",
+          "label": "Company director requirement",
+          "value": "A company must have at least one director.",
+          "source": {
+            "url": "https://www.acra.gov.sg/register/business/choosing-business-structure/",
+            "lastVerified": "2026-07-19"
+          }
+        }
+      ]
+    },
+    {
+      "purpose": "holding-investment",
+      "recommendation": "Private company limited by shares",
+      "facts": [
+        {
+          "id": "acra-company-shareholder-requirement",
+          "label": "Company shareholder requirement",
+          "value": "All companies must have at least one shareholder.",
+          "source": {
+            "url": "https://www.acra.gov.sg/register/business/choosing-business-structure/",
+            "lastVerified": "2026-07-19"
+          }
+        }
+      ]
+    },
+    {
+      "purpose": "rd-ip-hub",
+      "recommendation": "Private company limited by shares",
+      "facts": [
+        {
+          "id": "acra-company-ongoing-obligations",
+          "label": "Company ongoing obligations",
+          "value": "Companies must maintain required registers and file annual returns.",
+          "source": {
+            "url": "https://www.acra.gov.sg/register/business/choosing-business-structure/",
+            "lastVerified": "2026-07-19"
+          }
+        }
+      ]
+    }
+  ],
+  "entrePassEligibility": [
+    {
+      "id": "mom-entrepass-vc-funding",
+      "label": "EntrePass innovator criterion: venture funding",
+      "value": "Raised at least S$100,000 from a single funding round from an eligible investor (e.g. a recognised venture capital, business angel, or government-backed fund).",
+      "source": {
+        "url": "https://www.mom.gov.sg/passes-and-permits/entrepass/eligibility",
+        "lastVerified": "2026-07-19"
+      }
+    },
+    {
+      "id": "mom-entrepass-incubator-support",
+      "label": "EntrePass innovator criterion: incubator or accelerator support",
+      "value": "Backed by a government-recognised or internationally renowned incubator or accelerator programme.",
+      "source": {
+        "url": "https://www.mom.gov.sg/passes-and-permits/entrepass/eligibility",
+        "lastVerified": "2026-07-19"
+      }
+    },
+    {
+      "id": "mom-entrepass-track-record",
+      "label": "EntrePass innovator criterion: entrepreneurial track record",
+      "value": "Founded and sold a business that was venture-backed or owned innovative technologies.",
+      "source": {
+        "url": "https://www.mom.gov.sg/passes-and-permits/entrepass/eligibility",
+        "lastVerified": "2026-07-19"
+      }
+    },
+    {
+      "id": "mom-entrepass-ip",
+      "label": "EntrePass innovator criterion: intellectual property",
+      "value": "Holds intellectual property registered with an approved national IP institution.",
+      "source": {
+        "url": "https://www.mom.gov.sg/passes-and-permits/entrepass/eligibility",
+        "lastVerified": "2026-07-19"
+      }
+    },
+    {
+      "id": "mom-entrepass-research-collaboration",
+      "label": "EntrePass innovator criterion: research collaboration",
+      "value": "Has an active, relevant research collaboration in Singapore with a university, research institution, or similar entity.",
+      "source": {
+        "url": "https://www.mom.gov.sg/passes-and-permits/entrepass/eligibility",
+        "lastVerified": "2026-07-19"
+      }
+    }
+  ]
+}

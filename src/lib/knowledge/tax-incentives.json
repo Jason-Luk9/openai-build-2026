@@ -1,0 +1,48 @@
+{
+  "globalRules": [
+    {
+      "id": "iras-corporate-tax-rate",
+      "label": "Corporate income tax rate",
+      "value": "17% flat rate on chargeable income, for both local and foreign companies.",
+      "source": {
+        "url": "https://www.iras.gov.sg/quick-links/tax-rates/corporate-income-tax-rates",
+        "lastVerified": "2026-07-19"
+      }
+    },
+    {
+      "id": "iras-gst-rate",
+      "label": "GST rate",
+      "value": "9%, effective for standard-rated supplies made on or after 1 January 2024.",
+      "source": {
+        "url": "https://www.iras.gov.sg/taxes/goods-services-tax-(gst)/basics-of-gst/current-gst-rates",
+        "lastVerified": "2026-07-19"
+      }
+    },
+    {
+      "id": "iras-startup-tax-exemption",
+      "label": "Start-up tax exemption",
+      "value": "75% of the first S$100,000 and 50% of the next S$100,000 of normal chargeable income for qualifying companies in their first three consecutive YAs.",
+      "source": {
+        "url": "https://www.iras.gov.sg/taxes/corporate-income-tax/basics-of-corporate-income-tax/corporate-income-tax-rate-rebates-and-tax-exemption-schemes",
+        "lastVerified": "2026-07-19"
+      }
+    },
+    {
+      "id": "iras-gst-registration-threshold",
+      "label": "GST registration threshold",
+      "value": "GST registration is compulsory when taxable turnover exceeds S$1 million under the applicable retrospective or prospective test.",
+      "source": {
+        "url": "https://www.iras.gov.sg/taxes/goods-services-tax-%28gst%29/gst-registration-deregistration/do-i-need-to-register-for-gst",
+        "lastVerified": "2026-07-19"
+      }
+    }
+  ],
+  "industryOpportunities": {
+    "fnb": [],
+    "saas": [],
+    "fintech": [],
+    "retail": [],
+    "medical-devices": [],
+    "generic": []
+  }
+}

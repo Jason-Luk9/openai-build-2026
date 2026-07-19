@@ -1,0 +1,162 @@
+{
+  "passThreshold": {
+    "id": "mom-compass-pass-threshold",
+    "label": "COMPASS pass threshold",
+    "value": 40,
+    "description": "An Employment Pass application needs at least 40 COMPASS points.",
+    "source": {
+      "url": "https://www.mom.gov.sg/-/media/mom/documents/press-releases/2023/annex-a---compass-scoring-rubric.pdf",
+      "lastVerified": "2026-07-19"
+    }
+  },
+  "smallFirmPmetThreshold": {
+    "id": "mom-compass-small-firm-pmet-threshold",
+    "label": "COMPASS small-firm PMET headcount threshold",
+    "value": 25,
+    "description": "Firms with fewer than 25 PMET employees receive a neutral default score of 10 points on both C3 (diversity) and C4 (support for local employment).",
+    "source": {
+      "url": "https://www.mom.gov.sg/-/media/mom/documents/press-releases/2023/annex-a---compass-scoring-rubric.pdf",
+      "lastVerified": "2026-07-19"
+    }
+  },
+  "criteria": [
+    {
+      "id": "C1",
+      "name": "Salary",
+      "facts": [
+        {
+          "id": "mom-compass-c1-salary",
+          "label": "C1 salary scoring",
+          "value": "C1 compares fixed monthly salary with local PMET salaries by age and sector.",
+          "source": {
+            "url": "https://www.mom.gov.sg/-/media/mom/documents/press-releases/2023/annex-a---compass-scoring-rubric.pdf",
+            "lastVerified": "2026-07-19"
+          }
+        }
+      ]
+    },
+    {
+      "id": "C2",
+      "name": "Qualifications",
+      "facts": [
+        {
+          "id": "mom-compass-c2-qualifications",
+          "label": "C2 qualification scoring",
+          "value": "C2 awards points for recognised qualifications.",
+          "source": {
+            "url": "https://www.mom.gov.sg/-/media/mom/documents/press-releases/2023/annex-a---compass-scoring-rubric.pdf",
+            "lastVerified": "2026-07-19"
+          }
+        }
+      ]
+    },
+    {
+      "id": "C3",
+      "name": "Diversity",
+      "facts": [
+        {
+          "id": "mom-compass-c3-small-firm-neutral",
+          "label": "C3 small-firm score",
+          "value": "Firms with fewer than 25 PMET employees receive 10 points by default for C3.",
+          "source": {
+            "url": "https://www.mom.gov.sg/-/media/mom/documents/press-releases/2023/annex-a---compass-scoring-rubric.pdf",
+            "lastVerified": "2026-07-19"
+          }
+        }
+      ]
+    },
+    {
+      "id": "C4",
+      "name": "Support for local employment",
+      "facts": [
+        {
+          "id": "mom-compass-c4-small-firm-neutral",
+          "label": "C4 small-firm score",
+          "value": "Firms with fewer than 25 PMET employees receive 10 points by default for C4.",
+          "source": {
+            "url": "https://www.mom.gov.sg/-/media/mom/documents/press-releases/2023/annex-a---compass-scoring-rubric.pdf",
+            "lastVerified": "2026-07-19"
+          }
+        }
+      ]
+    },
+    {
+      "id": "C5",
+      "name": "Skills bonus",
+      "facts": [
+        {
+          "id": "mom-compass-c5-skills-bonus",
+          "label": "C5 skills bonus",
+          "value": "A role on the Shortage Occupation List can receive a COMPASS skills bonus.",
+          "source": {
+            "url": "https://www.mom.gov.sg/-/media/mom/documents/press-releases/2023/annex-a---compass-scoring-rubric.pdf",
+            "lastVerified": "2026-07-19"
+          }
+        }
+      ]
+    },
+    {
+      "id": "C6",
+      "name": "Strategic economic priorities bonus",
+      "facts": [
+        {
+          "id": "mom-compass-c6-sep-bonus",
+          "label": "C6 strategic economic priorities bonus",
+          "value": "Eligible firms can receive a COMPASS bonus for strategic economic priorities.",
+          "source": {
+            "url": "https://www.mom.gov.sg/-/media/mom/documents/press-releases/2023/annex-a---compass-scoring-rubric.pdf",
+            "lastVerified": "2026-07-19"
+          }
+        }
+      ]
+    }
+  ],
+  "salaryContexts": [
+    {
+      "context": "financial-services",
+      "facts": [
+        {
+          "id": "mom-compass-financial-services-context",
+          "label": "Financial services salary context",
+          "value": "C1 salary scoring uses the candidate's sector and age context.",
+          "source": {
+            "url": "https://www.mom.gov.sg/-/media/mom/documents/press-releases/2023/annex-a---compass-scoring-rubric.pdf",
+            "lastVerified": "2026-07-19"
+          }
+        },
+        {
+          "id": "mom-ep-salary-floor-financial-services",
+          "label": "Employment Pass minimum qualifying salary (financial services)",
+          "value": "S$6,200 per month for applicants aged 23 or below, rising progressively to S$11,800 per month for applicants aged 45 and above.",
+          "source": {
+            "url": "https://www.mom.gov.sg/passes-and-permits/employment-pass/eligibility",
+            "lastVerified": "2026-07-19"
+          }
+        }
+      ]
+    },
+    {
+      "context": "non-financial-services",
+      "facts": [
+        {
+          "id": "mom-compass-non-financial-services-context",
+          "label": "Non-financial-services salary context",
+          "value": "C1 salary scoring uses the candidate's sector and age context.",
+          "source": {
+            "url": "https://www.mom.gov.sg/-/media/mom/documents/press-releases/2023/annex-a---compass-scoring-rubric.pdf",
+            "lastVerified": "2026-07-19"
+          }
+        },
+        {
+          "id": "mom-ep-salary-floor-general",
+          "label": "Employment Pass minimum qualifying salary (general sectors)",
+          "value": "S$5,600 per month for applicants aged 23 or below, rising progressively to S$10,700 per month for applicants aged 45 and above.",
+          "source": {
+            "url": "https://www.mom.gov.sg/passes-and-permits/employment-pass/eligibility",
+            "lastVerified": "2026-07-19"
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -142,7 +142,7 @@ repo root  (Next.js 15 scaffold, App Router, src dir, git init on day 1)
 - **Scope the knowledge base to the demo verticals** — F&B, SaaS, retail, medical devices, fintech + a generic fallback — keyed by industry preset, not the full SSIC table.
 - Naming: kebab-case filenames, PascalCase component exports, camelCase functions, camelCase JSON keys. Path alias `@/*`.
 - Git: init at scaffold; main-only; commit prefixes `feat:` `fix:` `content:` (knowledge edits) `chore:`.
-- Tooling: npm; default Next ESLint + Prettier, don't fight them; vitest for rules only (no component tests — hackathon).
+- Tooling: pnpm; default Next ESLint + Prettier, don't fight them; vitest for rules only (no component tests — hackathon).
 - Fee/date rendering via `format.ts` helpers only (en-SG locale) — no inline `toLocaleString` scattered around.
 
 ---
@@ -176,7 +176,7 @@ Backup: `?demo=1` offline mode; screen recording on standby.
 
 ## Verification
 
-- `npm run build` and `npx vitest run` clean; `scripts/validate-knowledge.ts` passes.
+- `pnpm run build` and `pnpm exec vitest run` clean; `scripts/validate-knowledge.ts` passes.
 - Golden tests: compass-scorer (≥5 scenarios: small-firm neutral, sub-benchmark salary fail, pass case, threshold edge), entity-recommender (each entry purpose), license-lookup (each vertical), tax-matcher (revenue above/below GST threshold).
 - Manual E2E per mock profile: intake → playbook; all 7 sections render; stream completes <30s; flags match expectations; PDF downloads.
 - Kill network → playbook still shows facts and falls back to fixture narratives with the banner.

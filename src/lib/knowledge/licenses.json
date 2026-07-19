@@ -1,0 +1,116 @@
+{
+  "industries": {
+    "fnb": [
+      {
+        "name": "Food Shop Licence",
+        "status": "required",
+        "facts": [
+          {
+            "id": "sfa-food-shop-licence",
+            "label": "Food Shop Licence",
+            "value": "S$195 per year",
+            "description": "Apply before starting food-retail operations.",
+            "source": {
+              "url": "https://www.sfa.gov.sg/food-retail/licence-permit/application-process-fees-for-licence-permit-for-food-retail",
+              "lastVerified": "2026-07-19"
+            }
+          }
+        ]
+      }
+    ],
+    "saas": [
+      {
+        "name": "Activity-specific licence review",
+        "status": "review-needed",
+        "facts": [
+          {
+            "id": "gobusiness-licence-finder",
+            "label": "Licence determination",
+            "value": "Confirm requirements against the exact business activity before operating.",
+            "source": {
+              "url": "https://www.gobusiness.gov.sg/licences",
+              "lastVerified": "2026-07-19"
+            }
+          }
+        ]
+      }
+    ],
+    "fintech": [
+      {
+        "name": "Payment Services Act licensing review",
+        "status": "review-needed",
+        "facts": [
+          {
+            "id": "mas-payment-services-licence-types",
+            "label": "Payment service licence types",
+            "value": "MAS lists Standard Payment Institution and Major Payment Institution licence categories.",
+            "source": {
+              "url": "https://eservices.mas.gov.sg/fid",
+              "lastVerified": "2026-07-19"
+            }
+          }
+        ]
+      }
+    ],
+    "retail": [
+      {
+        "name": "Activity-specific licence review",
+        "status": "review-needed",
+        "facts": [
+          {
+            "id": "gobusiness-retail-licence-finder",
+            "label": "Licence determination",
+            "value": "Retail licences depend on the goods and activity involved.",
+            "source": {
+              "url": "https://www.gobusiness.gov.sg/licences",
+              "lastVerified": "2026-07-19"
+            }
+          }
+        ]
+      }
+    ],
+    "medical-devices": [
+      {
+        "name": "HSA medical-device registration and dealer licence",
+        "status": "required",
+        "facts": [
+          {
+            "id": "hsa-medical-device-registration",
+            "label": "Medical-device registration",
+            "value": "Medical devices generally require HSA registration before supply; Class A low-risk devices are exempt from product registration.",
+            "source": {
+              "url": "https://www.hsa.gov.sg/medical-devices/regulatory-overview/",
+              "lastVerified": "2026-07-19"
+            }
+          },
+          {
+            "id": "hsa-medical-device-dealer-licence",
+            "label": "Medical-device dealer licence",
+            "value": "Dealers need a licence before importing, manufacturing, or supplying medical devices.",
+            "source": {
+              "url": "https://www.hsa.gov.sg/medical-devices/regulatory-overview/",
+              "lastVerified": "2026-07-19"
+            }
+          }
+        ]
+      }
+    ],
+    "generic": [
+      {
+        "name": "Activity-specific licence review",
+        "status": "review-needed",
+        "facts": [
+          {
+            "id": "gobusiness-generic-licence-finder",
+            "label": "Licence determination",
+            "value": "Use the government licence directory to determine activity-specific requirements.",
+            "source": {
+              "url": "https://www.gobusiness.gov.sg/licences",
+              "lastVerified": "2026-07-19"
+            }
+          }
+        ]
+      }
+    ]
+  }
+}
