@@ -1,0 +1,14 @@
+{
+  "homeCountry": "indonesia",
+  "industry": "fnb",
+  "entityPurpose": "local-operations",
+  "foundersRelocating": 1,
+  "staffRelocating": 2,
+  "projectedSingaporeRevenue": 850000,
+  "entrePassEvidence": {
+    "hasVcBacking": false,
+    "hasIp": false,
+    "hasTrackRecord": true,
+    "trackRecordDetails": "Operates a growing Indonesian F&B brand with regional distributor relationships."
+  }
+}

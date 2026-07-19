@@ -1,0 +1,15 @@
+{
+  "homeCountry": "philippines",
+  "industry": "fintech",
+  "entityPurpose": "local-operations",
+  "foundersRelocating": 1,
+  "staffRelocating": 3,
+  "projectedSingaporeRevenue": 1200000,
+  "entrePassEvidence": {
+    "hasVcBacking": true,
+    "vcBackingDetails": "Backed by a regulated-fintech focused seed investor.",
+    "hasIp": false,
+    "hasTrackRecord": true,
+    "trackRecordDetails": "Has an operating payments product in the Philippines."
+  }
+}

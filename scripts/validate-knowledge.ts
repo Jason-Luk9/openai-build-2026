@@ -13,7 +13,7 @@
  * This is a superset that will keep covering their facts once the
  * mock-profiles ticket lands.
  */
-import type { RegulatoryFact } from "../src/lib/schemas";
+import type { RegulatoryFact } from '../src/lib/schemas';
 
 type FactLogEntry = {
   domain: string;
@@ -24,24 +24,30 @@ type FactLogEntry = {
 };
 
 function isRegulatoryFact(value: unknown): value is RegulatoryFact {
-  if (typeof value !== "object" || value === null) return false;
+  if (typeof value !== 'object' || value === null) return false;
   const record = value as Record<string, unknown>;
-  if (typeof record.id !== "string" || typeof record.label !== "string") {
+  if (typeof record.id !== 'string' || typeof record.label !== 'string') {
     return false;
   }
-  if (typeof record.source !== "object" || record.source === null) {
+  if (typeof record.source !== 'object' || record.source === null) {
     return false;
   }
   const source = record.source as Record<string, unknown>;
-  return typeof source.url === "string" && typeof source.lastVerified === "string";
+  return (
+    typeof source.url === 'string' && typeof source.lastVerified === 'string'
+  );
 }
 
-function collectFacts(node: unknown, domain: string, out: FactLogEntry[]): void {
+function collectFacts(
+  node: unknown,
+  domain: string,
+  out: FactLogEntry[],
+): void {
   if (Array.isArray(node)) {
     for (const item of node) collectFacts(item, domain, out);
     return;
   }
-  if (typeof node !== "object" || node === null) return;
+  if (typeof node !== 'object' || node === null) return;
 
   if (isRegulatoryFact(node)) {
     out.push({
@@ -60,13 +66,15 @@ function collectFacts(node: unknown, domain: string, out: FactLogEntry[]): void 
 }
 
 async function main(): Promise<void> {
-  const { bundledKnowledge } = await import("../src/lib/schemas");
+  const { bundledKnowledge } = await import('../src/lib/schemas');
 
   const facts: FactLogEntry[] = [];
   for (const [domain, knowledge] of Object.entries(bundledKnowledge)) {
     collectFacts(knowledge, domain, facts);
   }
-  facts.sort((a, b) => a.domain.localeCompare(b.domain) || a.id.localeCompare(b.id));
+  facts.sort(
+    (a, b) => a.domain.localeCompare(b.domain) || a.id.localeCompare(b.id),
+  );
 
   const seenIds = new Map<string, string>();
   const duplicateIds: string[] = [];
@@ -92,16 +100,20 @@ async function main(): Promise<void> {
   }
 
   if (duplicateIds.length > 0) {
-    console.error(`FAIL: duplicate fact IDs found:\n  ${duplicateIds.join("\n  ")}`);
+    console.error(
+      `FAIL: duplicate fact IDs found:\n  ${duplicateIds.join('\n  ')}`,
+    );
     process.exitCode = 1;
     return;
   }
 
-  console.log(`PASS: all ${facts.length} facts have a valid source URL and last-verified date.`);
+  console.log(
+    `PASS: all ${facts.length} facts have a valid source URL and last-verified date.`,
+  );
 }
 
 main().catch((error: unknown) => {
-  console.error("FAIL: knowledge JSON failed schema validation.");
+  console.error('FAIL: knowledge JSON failed schema validation.');
   console.error(error instanceof Error ? error.message : error);
   process.exitCode = 1;
 });
