@@ -1,0 +1,130 @@
+{
+  "countries": {
+    "brunei": {
+      "country": "brunei",
+      "facts": [
+        {
+          "id": "iras-brunei-dta-review",
+          "label": "Cross-border tax treaty review",
+          "value": "Confirm any applicable Singapore DTA relief through IRAS before relying on a reduced withholding-tax rate.",
+          "source": {
+            "url": "https://www.iras.gov.sg/taxes/withholding-tax/withholding-tax-filing/claim-of-relief-under-the-avoidance-of-double-taxation-agreement-%28dta%29",
+            "lastVerified": "2026-07-19"
+          }
+        }
+      ]
+    },
+    "cambodia": {
+      "country": "cambodia",
+      "facts": [
+        {
+          "id": "iras-cambodia-dta-review",
+          "label": "Cross-border tax treaty review",
+          "value": "Confirm any applicable Singapore DTA relief through IRAS before relying on a reduced withholding-tax rate.",
+          "source": {
+            "url": "https://www.iras.gov.sg/taxes/withholding-tax/withholding-tax-filing/claim-of-relief-under-the-avoidance-of-double-taxation-agreement-%28dta%29",
+            "lastVerified": "2026-07-19"
+          }
+        }
+      ]
+    },
+    "indonesia": {
+      "country": "indonesia",
+      "facts": [
+        {
+          "id": "iras-indonesia-dta-review",
+          "label": "Singapore–Indonesia DTA interest cap",
+          "value": "Qualifying beneficial owners may be subject to source-country tax of no more than 10% of gross interest under Article 11; confirm treaty eligibility before filing.",
+          "source": {
+            "url": "https://www.iras.gov.sg/media/docs/default-source/dtas/singapore-indonesia-dta-%28ratified%29%2823-july-2021%29.pdf?sfvrsn=9be93475_12",
+            "lastVerified": "2026-07-19"
+          }
+        }
+      ]
+    },
+    "laos": {
+      "country": "laos",
+      "facts": [
+        {
+          "id": "iras-laos-dta-review",
+          "label": "Cross-border tax treaty review",
+          "value": "Confirm any applicable Singapore DTA relief through IRAS before relying on a reduced withholding-tax rate.",
+          "source": {
+            "url": "https://www.iras.gov.sg/taxes/withholding-tax/withholding-tax-filing/claim-of-relief-under-the-avoidance-of-double-taxation-agreement-%28dta%29",
+            "lastVerified": "2026-07-19"
+          }
+        }
+      ]
+    },
+    "malaysia": {
+      "country": "malaysia",
+      "facts": [
+        {
+          "id": "iras-malaysia-dta-review",
+          "label": "Cross-border tax treaty review",
+          "value": "Confirm any applicable Singapore DTA relief through IRAS before relying on a reduced withholding-tax rate.",
+          "source": {
+            "url": "https://www.iras.gov.sg/taxes/withholding-tax/withholding-tax-filing/claim-of-relief-under-the-avoidance-of-double-taxation-agreement-%28dta%29",
+            "lastVerified": "2026-07-19"
+          }
+        }
+      ]
+    },
+    "myanmar": {
+      "country": "myanmar",
+      "facts": [
+        {
+          "id": "iras-myanmar-dta-review",
+          "label": "Cross-border tax treaty review",
+          "value": "Confirm any applicable Singapore DTA relief through IRAS before relying on a reduced withholding-tax rate.",
+          "source": {
+            "url": "https://www.iras.gov.sg/taxes/withholding-tax/withholding-tax-filing/claim-of-relief-under-the-avoidance-of-double-taxation-agreement-%28dta%29",
+            "lastVerified": "2026-07-19"
+          }
+        }
+      ]
+    },
+    "philippines": {
+      "country": "philippines",
+      "facts": [
+        {
+          "id": "iras-philippines-dta-review",
+          "label": "Cross-border tax treaty review",
+          "value": "Confirm any applicable Singapore DTA relief through IRAS before relying on a reduced withholding-tax rate.",
+          "source": {
+            "url": "https://www.iras.gov.sg/taxes/withholding-tax/withholding-tax-filing/claim-of-relief-under-the-avoidance-of-double-taxation-agreement-%28dta%29",
+            "lastVerified": "2026-07-19"
+          }
+        }
+      ]
+    },
+    "thailand": {
+      "country": "thailand",
+      "facts": [
+        {
+          "id": "iras-thailand-dta-review",
+          "label": "Cross-border tax treaty review",
+          "value": "Confirm any applicable Singapore DTA relief through IRAS before relying on a reduced withholding-tax rate.",
+          "source": {
+            "url": "https://www.iras.gov.sg/taxes/withholding-tax/withholding-tax-filing/claim-of-relief-under-the-avoidance-of-double-taxation-agreement-%28dta%29",
+            "lastVerified": "2026-07-19"
+          }
+        }
+      ]
+    },
+    "vietnam": {
+      "country": "vietnam",
+      "facts": [
+        {
+          "id": "iras-vietnam-dta-review",
+          "label": "Singapore–Vietnam DTA interest cap",
+          "value": "Qualifying beneficial owners may be subject to source-country tax of no more than 10% of gross interest under Article 11; confirm treaty eligibility before filing.",
+          "source": {
+            "url": "https://www.iras.gov.sg/media/docs/default-source/dtas/singapore-vietnam-dta-%28ratified%29%28mli%29%2801092023%29.pdf",
+            "lastVerified": "2026-07-19"
+          }
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "commonRequirements": [
+    {
+      "id": "mas-financial-institutions-directory",
+      "label": "Licensed financial institution verification",
+      "value": "Use MAS's Financial Institutions Directory to verify an institution's licence type and status.",
+      "source": {
+        "url": "https://eservices.mas.gov.sg/fid",
+        "lastVerified": "2026-07-19"
+      }
+    }
+  ],
+  "industryFlags": {
+    "fnb": [],
+    "saas": [],
+    "fintech": [
+      {
+        "id": "mas-fintech-licence-verification",
+        "label": "Fintech licensing check",
+        "value": "Payment-service activities require an MAS licensing assessment before launch.",
+        "source": {
+          "url": "https://eservices.mas.gov.sg/fid",
+          "lastVerified": "2026-07-19"
+        }
+      }
+    ],
+    "retail": [],
+    "medical-devices": [],
+    "generic": []
+  }
+}
