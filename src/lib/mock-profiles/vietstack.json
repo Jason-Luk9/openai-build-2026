@@ -1,0 +1,14 @@
+{
+  "homeCountry": "vietnam",
+  "industry": "saas",
+  "entityPurpose": "regional-hq",
+  "foundersRelocating": 2,
+  "staffRelocating": 8,
+  "projectedSingaporeRevenue": 1200000,
+  "entrePassEvidence": {
+    "hasVcBacking": true,
+    "vcBackingDetails": "Raised S$150,000 from a recognised regional venture capital fund in its seed round.",
+    "hasIp": false,
+    "hasTrackRecord": false
+  }
+}

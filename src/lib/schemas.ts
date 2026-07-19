@@ -114,7 +114,7 @@ export const RegulatoryFactSchema = z
   })
   .strict();
 
-const DerivedRecommendationSchema = z
+export const DerivedRecommendationSchema = z
   .object({
     summary: nonEmptyText("a recommendation"),
     sourceReferences: z
@@ -385,8 +385,17 @@ export type HomeCountry = z.infer<typeof HomeCountrySchema>;
 export type Industry = z.infer<typeof IndustrySchema>;
 export type EntityPurpose = z.infer<typeof EntityPurposeSchema>;
 export type Source = z.infer<typeof SourceSchema>;
+export type SourceReference = z.infer<typeof SourceReferenceSchema>;
 export type RegulatoryFact = z.infer<typeof RegulatoryFactSchema>;
+export type DerivedRecommendation = z.infer<typeof DerivedRecommendationSchema>;
 export type PlaybookFacts = z.infer<typeof PlaybookFactsSchema>;
+export type EntityFacts = z.infer<typeof EntityFactsSchema>;
+export type CompassCriterionFacts = z.infer<typeof CompassCriterionFactsSchema>;
+export type LicensesFacts = z.infer<typeof LicensesFactsSchema>;
+export type TaxIncentivesFacts = z.infer<typeof TaxIncentivesFactsSchema>;
+export type BankingFacts = z.infer<typeof BankingFactsSchema>;
+export type TimelineFacts = z.infer<typeof TimelineFactsSchema>;
+export type RiskMatrixFacts = z.infer<typeof RiskMatrixFactsSchema>;
 export type Narratives = z.infer<typeof NarrativesSchema>;
 export type StreamingNarratives = z.infer<typeof StreamingNarrativesSchema>;
 export type NarrativeSection = z.infer<typeof NarrativeSectionSchema>;

@@ -1,0 +1,14 @@
+{
+  "homeCountry": "indonesia",
+  "industry": "fnb",
+  "entityPurpose": "local-operations",
+  "foundersRelocating": 2,
+  "staffRelocating": 3,
+  "projectedSingaporeRevenue": 450000,
+  "entrePassEvidence": {
+    "hasVcBacking": false,
+    "hasIp": false,
+    "hasTrackRecord": true,
+    "trackRecordDetails": "Founded and grew a food-delivery chain in Jakarta from three outlets to a regional acquisition."
+  }
+}
