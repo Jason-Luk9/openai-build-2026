@@ -8,6 +8,15 @@
         "url": "https://eservices.mas.gov.sg/fid",
         "lastVerified": "2026-07-19"
       }
+    },
+    {
+      "id": "dbs-foreign-owned-company-account",
+      "label": "Business account opening for foreign-owned companies",
+      "value": "DBS requires ACRA incorporation documents, signatory identity/address verification, and board resolutions before opening a business account; foreign-owned or non-resident-director companies undergo enhanced due diligence and a longer review period.",
+      "source": {
+        "url": "https://www.dbs.com.sg/sme/day-to-day/accounts/foreign-owned-companies",
+        "lastVerified": "2026-07-19"
+      }
     }
   ],
   "industryFlags": {

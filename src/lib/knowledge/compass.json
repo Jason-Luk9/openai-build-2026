@@ -19,6 +19,16 @@
       "lastVerified": "2026-07-19"
     }
   },
+  "smallFirmNeutralScore": {
+    "id": "mom-compass-small-firm-neutral-score",
+    "label": "COMPASS small-firm neutral C3/C4 score",
+    "value": 10,
+    "description": "The default neutral score awarded on both C3 (diversity) and C4 (support for local employment) for firms below the small-firm PMET headcount threshold.",
+    "source": {
+      "url": "https://www.mom.gov.sg/-/media/mom/documents/press-releases/2023/annex-a---compass-scoring-rubric.pdf",
+      "lastVerified": "2026-07-19"
+    }
+  },
   "criteria": [
     {
       "id": "C1",

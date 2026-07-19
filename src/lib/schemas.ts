@@ -303,6 +303,7 @@ export const CompassKnowledgeSchema = z
   .object({
     passThreshold: RegulatoryFactSchema,
     smallFirmPmetThreshold: RegulatoryFactSchema,
+    smallFirmNeutralScore: RegulatoryFactSchema,
     criteria: z
       .array(
         z
