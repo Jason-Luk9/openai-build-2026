@@ -13,6 +13,8 @@ const agencyNames = {
   ACRA: 'Accounting and Corporate Regulatory Authority',
   IRAS: 'Inland Revenue Authority of Singapore',
   MAS: 'Monetary Authority of Singapore',
+  SFA: 'Singapore Food Agency',
+  EDB: 'Singapore Economic Development Board',
 } as const;
 
 export type Agency = keyof typeof agencyNames;
