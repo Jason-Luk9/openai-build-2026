@@ -3,12 +3,14 @@
   "industry": "saas",
   "entityPurpose": "regional-hq",
   "foundersRelocating": 2,
-  "staffRelocating": 8,
-  "projectedSingaporeRevenue": 1200000,
+  "staffRelocating": 1,
+  "projectedSingaporeRevenue": 1800000,
   "entrePassEvidence": {
     "hasVcBacking": true,
-    "vcBackingDetails": "Raised S$150,000 from a recognised regional venture capital fund in its seed round.",
-    "hasIp": false,
-    "hasTrackRecord": false
+    "vcBackingDetails": "Seed-backed by an institutional ASEAN venture fund.",
+    "hasIp": true,
+    "ipDetails": "Owns proprietary workflow optimisation software.",
+    "hasTrackRecord": true,
+    "trackRecordDetails": "Serves B2B customers across Vietnam and Southeast Asia."
   }
 }

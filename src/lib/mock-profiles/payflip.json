@@ -2,13 +2,14 @@
   "homeCountry": "philippines",
   "industry": "fintech",
   "entityPurpose": "local-operations",
-  "foundersRelocating": 2,
-  "staffRelocating": 12,
-  "projectedSingaporeRevenue": 2000000,
+  "foundersRelocating": 1,
+  "staffRelocating": 3,
+  "projectedSingaporeRevenue": 1200000,
   "entrePassEvidence": {
-    "hasVcBacking": false,
-    "hasIp": true,
-    "ipDetails": "Holds a Philippines-registered patent on a cross-border payment-routing method.",
-    "hasTrackRecord": false
+    "hasVcBacking": true,
+    "vcBackingDetails": "Backed by a regulated-fintech focused seed investor.",
+    "hasIp": false,
+    "hasTrackRecord": true,
+    "trackRecordDetails": "Has an operating payments product in the Philippines."
   }
 }

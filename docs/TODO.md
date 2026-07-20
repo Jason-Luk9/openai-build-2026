@@ -8,8 +8,8 @@ It is ordered so that factual accuracy and the deterministic rules engine land b
 - [x] Read the implementation plan and turn it into an execution checklist.
 - [x] Create the Next.js App Router scaffold.
 - [x] Move the implementation plan into `docs/`.
-- [ ] Finish installing the planned app, AI, UI, PDF, and testing dependencies.
-- [ ] Configure shadcn primitives and project formatting/testing scripts.
+- [ ] Finish installing the planned app, AI, UI, PDF, and testing dependencies. (UI-adjacent deps in — shadcn/Base UI primitives, zustand, framer-motion, lucide-react, vitest; still missing `ai`/`@ai-sdk/google`, `react-hook-form` + `@hookform/resolvers`, `recharts`, `@react-pdf/renderer`.)
+- [x] Configure shadcn primitives and project formatting/testing scripts. (`components.json` + `src/components/ui/*` via shadcn init; `.prettierrc.json`/`.prettierignore` and `pnpm run format`/`format:check`; `pnpm test` via Vitest.)
 
 ## Facts, schemas, and knowledge
 
@@ -17,8 +17,8 @@ It is ordered so that factual accuracy and the deterministic rules engine land b
 - [x] Add provenance-aware knowledge JSON for entities, COMPASS, licences, tax, banking, and country context.
 - [x] Verify all regulatory facts against live Singapore government sources. (ACRA S$315 incorporation fee, SFA S$195/yr Food Shop Licence, and the Indonesia/Vietnam DTA Article 11 10% interest caps were live re-verified this pass; EP salary floor, GST rate, corporate tax rate, COMPASS small-firm threshold, and EntrePass eligibility criteria were live-verified in the prior pass. Source set now also covers EDB (Development and Expansion Incentive) and a bank SME page (DBS foreign-owned-company account requirements), closing the two agency gaps from the ticket.)
 - [x] Specifically verify and encode the COMPASS small-firm rule: firms with fewer than 25 PMET employees receive neutral C3/C4 scores. (Both the 25-PMET threshold and the neutral 10-point score are now structured `RegulatoryFact`s in `compass.json`, not just prose.)
-- [x] Add the three demo profiles: Warung Digital, VietStack, and PayFlip. (`src/lib/mock-profiles/{warung-digital,vietstack,payflip}.json` + `index.ts`, parsed against `ProfileSchema` at import time. These ids are the stable identifiers for `?demo=1&profile=<id>` loading once demo mode exists — see `src/lib/mock-profiles/index.ts`'s doc comment. Product-value mapping: `warung-digital` = F&B licensing + EntrePass via track record; `vietstack` = COMPASS/fundraising + the small-firm nuance, EntrePass via VC backing; `payflip` = MAS/fintech compliance, EntrePass via IP. Matching hand-authored `Narratives` fixtures live in `src/lib/fixtures/<id>.json`, same ids, validated against `NarrativesSchema` and checked not to introduce numbers absent from that profile's computed `PlaybookFacts` in `tests/rules/fixtures.test.ts`.)
-- [x] Add a knowledge-validation script that fails facts missing source URLs or last-verified dates. (`scripts/validate-knowledge.ts`, run via `pnpm run validate-knowledge`. Phase 1 logs every bundled fact's id/source/lastVerified as a full-corpus superset log. Phase 2 now closes the profile-scoping gap: it computes `buildPlaybookFacts` for each of the 3 demo profiles and logs exactly which facts each one cites per dashboard section — detecting fact/source-reference nodes structurally via `RegulatoryFactSchema`/`SourceReferenceSchema` rather than hand-picked field names, hard-failing on any cited fact id not present in `bundledKnowledge`, and hard-failing if any of the 7 sections cites zero facts for a profile.)
+- [x] Add the three demo profiles: Warung Digital, VietStack, and PayFlip. (`src/lib/mock-profiles/*.json`, schema-valid; still minimal — richer per-profile detail is expected once the rules engine and narratives land.)
+- [x] Add a knowledge-validation script that fails facts missing source URLs or last-verified dates. (`scripts/validate-knowledge.ts`, run via `pnpm run validate-knowledge`; logs every bundled fact's id/source/lastVerified as a superset verification log — full profile-scoping is pending the mock-profiles ticket.)
 
 ## Deterministic rules engine
 
@@ -32,11 +32,11 @@ It is ordered so that factual accuracy and the deterministic rules engine land b
 
 ## Product experience
 
-- [ ] Build the calm, institutional landing page with mock-profile cards.
+- [x] Build the calm, institutional landing page with mock-profile cards. (`src/app/page.tsx`; loads Warung Digital/VietStack/PayFlip via `useProfileStore`; `/intake` and `/playbook` are stub routes pending their own tickets.)
 - [ ] Build the five-step, validated intake wizard with profile persistence and mock-profile loading.
 - [ ] Build the playbook dashboard that renders fact cards immediately.
 - [ ] Build all seven fact sections: entity, visa/COMPASS, licences, tax, banking, timeline, and risk matrix.
-- [ ] Add source footers, verification dates, status chips, agency tooltips, and the persistent legal disclaimer.
+- [ ] Add source footers, verification dates, status chips, agency tooltips, and the persistent legal disclaimer. (Shared components built in `src/components/playbook/` and demoed on the landing page; still need wiring into the actual playbook sections once those are built.)
 - [ ] Add the COMPASS horizontal-bar chart and 3×3 risk grid.
 - [ ] Add accessible motion and reduced-motion support.
 
