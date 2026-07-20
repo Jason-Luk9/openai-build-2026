@@ -40,6 +40,7 @@ const mockProfiles: Array<{
 
 export default function Home() {
   const router = useRouter();
+  const profile = useProfileStore((state) => state.profile);
   const loadMockProfile = useProfileStore((state) => state.loadMockProfile);
 
   function handleLoadProfile(id: MockProfileId) {
@@ -72,9 +73,9 @@ export default function Home() {
             </a>
             <Link
               className="inline-flex items-center gap-1 rounded-md text-[13px] font-semibold text-teal-700 transition-colors hover:text-teal-800 focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-teal-700"
-              href="/intake"
+              href={profile ? '/playbook' : '/intake'}
             >
-              Build your playbook
+              {profile ? 'View current playbook' : 'Build your playbook'}
               <ArrowRight aria-hidden="true" className="size-3.5" />
             </Link>
           </nav>
@@ -105,9 +106,9 @@ export default function Home() {
             <div className="mt-5 flex flex-wrap items-center gap-3">
               <Button
                 className="h-10 bg-teal-700 px-4 text-white hover:bg-teal-800 focus-visible:ring-teal-700/30"
-                onClick={() => router.push('/intake')}
+                onClick={() => router.push(profile ? '/playbook' : '/intake')}
               >
-                Build your playbook
+                {profile ? 'View current playbook' : 'Build your playbook'}
                 <ArrowRight aria-hidden="true" />
               </Button>
               <Button
