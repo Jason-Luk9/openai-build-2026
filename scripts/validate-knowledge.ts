@@ -80,21 +80,6 @@ function collectFacts(
   }
 }
 
-/**
- * Walks a computed PlaybookFacts section collecting every fact id it
- * cites — whether embedded as a full RegulatoryFact or referenced via a
- * `{ factId, source }` SourceReference — detected structurally against the
- * real schemas rather than by hand-picked field names, so this keeps
- * matching if either schema's shape changes.
- */
-function isSourceReference(
-  value: unknown,
-): value is { factId: string; source: unknown } {
-  if (typeof value !== 'object' || value === null) return false;
-  const record = value as Record<string, unknown>;
-  return typeof record.factId === 'string' && 'source' in record;
-}
-
 function collectCitedFactIds(node: unknown, out: Set<string>): void {
   if (Array.isArray(node)) {
     for (const item of node) collectCitedFactIds(item, out);

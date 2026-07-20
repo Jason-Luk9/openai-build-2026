@@ -42,7 +42,7 @@ It is ordered so that factual accuracy and the deterministic rules engine land b
 
 ## AI and resilience
 
-- [x] Add the provider-agnostic AI configuration, defaulting to Gemini 2.5 Flash.
+- [x] Add the provider-agnostic AI configuration, defaulting to Gemini 3 Flash Preview.
 - [x] Add `POST /api/generate` using a narratives-only schema and a constrained grounding prompt.
 - [x] Merge streamed narratives into the already-rendered facts UI.
 - [x] Add pre-generated per-profile fixtures and `?demo=1` mode.

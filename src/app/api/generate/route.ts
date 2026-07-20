@@ -51,8 +51,6 @@ export async function POST(request: Request) {
   const stream = new ReadableStream<Uint8Array>({
     async start(controller) {
       let emitted = false;
-      let lastError: unknown;
-
       for (const { model } of models) {
         try {
           const result = streamObject({
@@ -89,13 +87,20 @@ export async function POST(request: Request) {
           );
           controller.close();
           return;
-        } catch (error) {
-          lastError = error;
+        } catch {
           if (emitted) break;
         }
       }
 
-      controller.error(lastError ?? new Error('Narrative generation failed.'));
+      controller.enqueue(
+        encoder.encode(
+          `${JSON.stringify({
+            type: 'error',
+            message: 'Narrative generation failed validation or the provider was unavailable.',
+          })}\n`,
+        ),
+      );
+      controller.close();
     },
   });
 

@@ -4,10 +4,13 @@ import Link from 'next/link';
 import { useEffect, useMemo, useState } from 'react';
 
 import { findNarrativeFixture } from '@/lib/fixtures';
+import { formatMoney, formatNumber, formatWeek } from '@/lib/format';
 import { mockProfileIds, type MockProfileId } from '@/lib/mock-profiles';
 import {
   NarrativeSectionSchema,
   NarrativesSchema,
+  type PlaybookFacts,
+  type Profile,
   type NarrativeSection,
   type Narratives,
 } from '@/lib/schemas';
@@ -77,10 +80,11 @@ export default function PlaybookPage() {
           for (const line of lines) {
             if (!line.trim()) continue;
             const event = JSON.parse(line) as {
-              type: 'narrative' | 'complete';
+              type: 'narrative' | 'complete' | 'error';
               section?: keyof typeof sectionLabels;
               narrative?: unknown;
               narratives?: unknown;
+              message?: string;
             };
             if (event.type === 'narrative' && event.section && event.narrative) {
               const section = NarrativeSectionSchema.parse(event.narrative);
@@ -89,6 +93,7 @@ export default function PlaybookPage() {
             if (event.type === 'complete') {
               setNarratives(NarrativesSchema.parse(event.narratives));
             }
+            if (event.type === 'error') throw new Error(event.message ?? 'Narrative generation failed.');
           }
           if (result.done) break;
         }
@@ -146,12 +151,7 @@ export default function PlaybookPage() {
                 {displayedNarratives[key] ? (displayedSource === 'loading' ? 'Streaming' : 'Narrative ready') : 'Narrative pending'}
               </span>
             </div>
-            <details className="mt-4 rounded-md bg-zinc-50 p-3">
-              <summary className="cursor-pointer text-sm font-medium text-zinc-700">View computed facts</summary>
-              <pre className="mt-3 overflow-x-auto whitespace-pre-wrap text-xs leading-5 text-zinc-600">
-                {JSON.stringify(facts[key], null, 2)}
-              </pre>
-            </details>
+            <FactSummary facts={facts} profile={profile} section={key} />
             <NarrativeBody narrative={displayedNarratives[key]} />
           </section>
         ))}
@@ -161,6 +161,66 @@ export default function PlaybookPage() {
       </Link>
     </main>
   );
+}
+
+function FactSummary({
+  facts,
+  profile,
+  section,
+}: {
+  facts: PlaybookFacts;
+  profile: Profile;
+  section: keyof typeof sectionLabels;
+}) {
+  const lines = getFactLines(facts, profile, section);
+
+  return (
+    <div className="mt-4 rounded-lg border border-zinc-200 bg-zinc-50 px-4 py-3">
+      <p className="text-xs font-semibold tracking-[0.08em] text-zinc-500 uppercase">Facts</p>
+      <ul className="mt-2 space-y-1 text-sm leading-5 text-zinc-700">
+        {lines.map((line) => <li key={line}>{line}</li>)}
+      </ul>
+    </div>
+  );
+}
+
+function getFactLines(
+  facts: PlaybookFacts,
+  profile: Profile,
+  section: keyof typeof sectionLabels,
+): string[] {
+  switch (section) {
+    case 'entity':
+      return [
+        `Industry: ${profile.industry}; purpose: ${profile.entityPurpose}.`,
+        `Relocating founders/staff: ${formatNumber(profile.foundersRelocating)} / ${formatNumber(profile.staffRelocating)}.`,
+        facts.entity.recommendation.summary,
+        ...facts.entity.regulatoryFacts.slice(0, 2).map((fact) => `${fact.label}: ${String(fact.value)}`),
+      ];
+    case 'visaCompass':
+      return [
+        `Relocating team: ${formatNumber(profile.foundersRelocating + profile.staffRelocating)} people.`,
+        `COMPASS score: ${formatNumber(facts.visaCompass.totalScore)} / ${formatNumber(facts.visaCompass.passThreshold)} points to pass.`,
+        `Small-firm rule: ${facts.visaCompass.isSmallFirm ? 'applies' : 'does not apply'}.`,
+        ...facts.visaCompass.criteria.map((criterion) => `${criterion.id}: ${formatNumber(criterion.score)} / ${formatNumber(criterion.maximumScore)} points.`),
+      ];
+    case 'licenses':
+      return facts.licenses.items.map((item) => {
+        const fact = item.regulatoryFacts[0];
+        return `${item.name}: ${item.status}${fact ? ` — ${String(fact.value)}` : ''}.`;
+      });
+    case 'taxIncentives':
+      return [
+        `Projected Singapore revenue: ${formatMoney(profile.projectedSingaporeRevenue)}.`,
+        ...facts.taxIncentives.regulatoryFacts.map((fact) => `${fact.label}: ${String(fact.value)}`),
+      ];
+    case 'banking':
+      return facts.banking.requirements.map((fact) => `${fact.label}: ${String(fact.value)}`);
+    case 'timeline':
+      return facts.timeline.steps.map((step) => `${formatWeek(step.week)}: ${step.action}`);
+    case 'riskMatrix':
+      return facts.riskMatrix.risks.map((risk) => `${risk.title}: ${risk.likelihood} likelihood / ${risk.impact} impact.`);
+  }
 }
 
 function NarrativeBody({ narrative }: { narrative: NarrativeSection | undefined }) {

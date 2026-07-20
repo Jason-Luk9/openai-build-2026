@@ -4,7 +4,7 @@ import type { LanguageModel } from 'ai';
 
 import type { PlaybookFacts, Profile } from '@/lib/schemas';
 
-const GEMINI_MODEL = 'gemini-2.5-flash';
+const GEMINI_MODEL = 'gemini-3-flash-preview';
 
 export type NarrativeModel = {
   provider: 'google' | 'groq';
@@ -44,6 +44,7 @@ Grounding rules:
 - Do not introduce a legal, tax, immigration, licensing, banking, or operational requirement that is not contained in the supplied facts.
 - Do not turn an example, assumption, recommendation, or qualitative risk into a confirmed fact.
 - Add an explicit uncertaintyFlags entry whenever information is missing, conditional, illustrative, ambiguous, or requires agency/provider confirmation. Use an empty array only when the supplied facts are definitive.
+- Keep each section concise: return no more than five nextSteps and five uncertaintyFlags.
 - Keep facts and narratives separate: the output must contain prose only and must not replace any fact-card value.
 
 Profile:
@@ -53,4 +54,3 @@ Computed facts:
 ${JSON.stringify(facts)}
 `;
 }
-
