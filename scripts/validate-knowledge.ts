@@ -15,7 +15,7 @@
  * one actually cites, grouped by dashboard section — this is the
  * verification log the demo profiles ticket requires.
  */
-import type { RegulatoryFact } from '../src/lib/schemas';
+import type { PlaybookFacts, RegulatoryFact } from '../src/lib/schemas';
 
 type FactLogEntry = {
   domain: string;
@@ -38,6 +38,17 @@ function isRegulatoryFact(value: unknown): value is RegulatoryFact {
   return (
     typeof source.url === 'string' && typeof source.lastVerified === 'string'
   );
+}
+
+function isSourceReference(
+  value: unknown,
+): value is { factId: string; source: { url: string; lastVerified: string } } {
+  if (typeof value !== 'object' || value === null) return false;
+  const record = value as Record<string, unknown>;
+  if (typeof record.factId !== 'string') return false;
+  if (typeof record.source !== 'object' || record.source === null) return false;
+  const source = record.source as Record<string, unknown>;
+  return typeof source.url === 'string' && typeof source.lastVerified === 'string';
 }
 
 function collectFacts(
@@ -93,42 +104,6 @@ function collectCitedFactIds(node: unknown, out: Set<string>): void {
   for (const value of Object.values(node)) {
     collectCitedFactIds(value, out);
   }
-}
-
-function logProfileFacts(
-  profileId: string,
-  facts: PlaybookFacts,
-  factsById: Map<string, FactLogEntry>,
-): string[] {
-  const problems: string[] = [];
-
-  console.log(`\n=== ${profileId} ===`);
-  for (const [section, sectionFacts] of Object.entries(facts) as Array<
-    [keyof PlaybookFacts, unknown]
-  >) {
-    const citedIds = new Set<string>();
-    collectCitedFactIds(sectionFacts, citedIds);
-
-    if (citedIds.size === 0) {
-      problems.push(`${profileId}.${section} cites zero regulatory facts`);
-      continue;
-    }
-
-    console.log(`  [${section}] ${citedIds.size} fact(s) cited`);
-    for (const id of [...citedIds].sort()) {
-      const entry = factsById.get(id);
-      if (!entry) {
-        problems.push(
-          `${profileId}.${section} cites unknown fact id "${id}" (not present in bundledKnowledge)`,
-        );
-        continue;
-      }
-      console.log(`    - ${entry.id} — ${entry.label}`);
-      console.log(`      source: ${entry.url} (verified ${entry.lastVerified})`);
-    }
-  }
-
-  return problems;
 }
 
 async function main(): Promise<void> {
