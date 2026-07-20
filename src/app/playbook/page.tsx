@@ -151,8 +151,10 @@ export default function PlaybookPage() {
           <section className="rounded-xl border border-zinc-200 bg-white p-5 shadow-sm" key={key}>
             <div className="flex items-center justify-between gap-3">
               <h2 className="text-lg font-semibold">{sectionLabels[key]}</h2>
-              <span className="text-xs text-zinc-500">
-                {displayedNarratives[key] ? (displayedSource === 'loading' ? 'Streaming' : 'Narrative ready') : 'Narrative pending'}
+              <span className={displayedSource === 'loading' ? 'text-xs font-semibold text-teal-700' : 'text-xs text-zinc-500'}>
+                {displayedNarratives[key]
+                  ? (displayedSource === 'loading' ? 'Streaming' : 'Narrative ready')
+                  : (displayedSource === 'loading' ? 'Generating...' : 'Narrative pending')}
               </span>
             </div>
             <FactSummary facts={facts} profile={profile} section={key} />
@@ -228,7 +230,27 @@ function getFactLines(
 }
 
 function NarrativeBody({ narrative }: { narrative: NarrativeSection | undefined }) {
-  if (!narrative) return <div className="mt-4 h-16 animate-pulse rounded bg-zinc-100" />;
+  if (!narrative) {
+    return (
+      <div
+        aria-label="AI narrative is being generated"
+        aria-live="polite"
+        className="mt-4 rounded-lg border-2 border-teal-200 bg-teal-50 p-4 text-teal-950"
+        role="status"
+      >
+        <div className="flex items-center gap-2">
+          <span aria-hidden="true" className="size-2.5 animate-pulse rounded-full bg-teal-700 motion-reduce:animate-none" />
+          <p className="text-sm font-semibold">Generating grounded guidance...</p>
+        </div>
+        <div aria-hidden="true" className="mt-3 space-y-2">
+          <div className="h-2.5 w-full animate-pulse rounded-full bg-teal-200 motion-reduce:animate-none" />
+          <div className="h-2.5 w-10/12 animate-pulse rounded-full bg-teal-200 motion-reduce:animate-none" />
+          <div className="h-2.5 w-7/12 animate-pulse rounded-full bg-teal-200 motion-reduce:animate-none" />
+        </div>
+        <p className="mt-3 text-xs text-teal-800">Your facts are ready. The AI explanation will appear here as it streams in.</p>
+      </div>
+    );
+  }
   return (
     <div className="mt-4 space-y-3 text-sm leading-6 text-zinc-700">
       <p>{narrative.summary}</p>
