@@ -51,7 +51,7 @@ It is ordered so that factual accuracy and the deterministic rules engine land b
 ## Finalization
 
 - [x] Add client-side PDF export that mirrors the facts-based playbook. (`src/components/pdf/playbook-pdf.tsx`; renders directly from `PlaybookFacts`, includes all seven sections, source links, verification dates, and the legal disclaimer.)
-- [ ] Add grounded what-if chat backed by rules-engine tools. (Deferred stretch scope; no chat route or unsupported manual scenario values added in the core release.)
+- [x] Add grounded what-if chat backed by rules-engine tools. (`src/app/api/chat/route.ts` and `src/components/chat/ask-singapath.tsx`; supports sourced salary lower-bound checks, headcount threshold checks, revenue/GST checks, and profile-industry licence lookup without inventing unsupported regulatory values.)
 - [ ] Run knowledge validation, unit tests, lint, and production build.
 - [ ] Manually test all three profiles, offline/demo fallback, PDF export, and a deployed URL.
 - [ ] Fact-check the final demo against primary sources and prepare the backup recording/demo script.
