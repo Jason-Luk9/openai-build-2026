@@ -5,14 +5,16 @@
     "nextSteps": [
       "Reserve the company name and file the S$315 ACRA incorporation.",
       "File the EntrePass innovator-track application citing the registered patent."
-    ]
+    ],
+    "uncertaintyFlags": ["EntrePass approval remains subject to MOM assessment."]
   },
   "visaCompass": {
-    "summary": "PayFlip relocates 14 PMETs (2 founders, 12 staff) \u2014 still under the 25-PMET small-firm threshold \u2014 so C3 (Diversity) and C4 (Support for local employment) both default to the neutral 10-point score. Because PayFlip is fintech, C1 (Salary) is assessed against the financial-services Employment Pass floor (S$6,200 rising to S$11,800 by age), rather than the general-sector floor, though it's still assumed to be met (score 20) pending the actual offered salary. With C2 assumed at a recognised degree (10), the illustrative total is 50 points, above the 40-point pass threshold.",
+    "summary": "PayFlip relocates the supplied founder and staff total, still under the 25-PMET small-firm threshold, so C3 (Diversity) and C4 (Support for local employment) both default to the neutral score. Because PayFlip is fintech, C1 (Salary) is assessed against the financial-services Employment Pass context, pending the actual offered salary. The illustrative total remains subject to the applicant's qualifications and submitted evidence.",
     "nextSteps": [
       "Confirm the actual offered salary against the financial-services EP floor before filing \u2014 C1 here assumes a qualifying benchmark, not a real candidate.",
       "Track headcount growth toward the 25-PMET threshold, since the neutral C3/C4 default won't apply indefinitely."
-    ]
+    ],
+    "uncertaintyFlags": ["COMPASS scoring depends on the specific pass applicant and offered salary."]
   },
   "licenses": {
     "summary": "Payment-service activities fall under the Payment Services Act \u2014 MAS lists Standard Payment Institution and Major Payment Institution licence categories, and PayFlip needs a licensing review to confirm which category its cross-border payment activity falls under before launch.",
@@ -20,13 +22,15 @@
     "nextSteps": [
       "Determine whether PayFlip's activity requires a Standard or Major Payment Institution licence.",
       "Start the MAS licensing review well ahead of the planned launch."
-    ]
+    ],
+    "uncertaintyFlags": ["The applicable licence depends on the exact regulated activity."]
   },
   "taxIncentives": {
-    "summary": "Standard Singapore tax facts apply: 17% flat corporate rate, the first-three-years start-up exemption (75% of the first S$100,000, 50% of the next S$100,000), and 9% GST. At a projected S$2,000,000 in Singapore revenue \u2014 the largest of PayFlip's demo peers \u2014 it's well above the S$1 million GST registration threshold.",
+    "summary": "Standard Singapore tax facts apply: 17% flat corporate rate, the first-three-years start-up exemption (75% of the first S$100,000, 50% of the next S$100,000), and 9% GST. At the supplied projected Singapore revenue, PayFlip is above the S$1 million GST registration threshold.",
     "nextSteps": [
       "Register for GST ahead of the S$1 million threshold already being crossed."
-    ]
+    ],
+    "uncertaintyFlags": ["Tax and incentive eligibility depends on qualifying conditions."]
   },
   "banking": {
     "summary": "Beyond the standard foreign-owned-company due diligence DBS requires (ACRA documents, signatory identity/address verification, board resolutions), PayFlip's payment-service activities specifically require an MAS licensing assessment before launch \u2014 verify status via MAS's Financial Institutions Directory before opening an account.",
@@ -34,17 +38,20 @@
     "nextSteps": [
       "Prepare ACRA documents and signatory ID/address verification before the first bank meeting.",
       "Verify MAS licensing status via the Financial Institutions Directory before opening an account."
-    ]
+    ],
+    "uncertaintyFlags": ["The bank may request additional due-diligence documents."]
   },
   "timeline": {
     "summary": "Roughly a 6-week runway: incorporate in week 1, start the Payment Services Act licensing review in week 2, open the bank account in week 3 (padded for foreign-owned due diligence), submit the EntrePass and staff Employment Pass applications in week 4, and register for GST in week 6 given projected revenue already exceeds the S$1 million threshold.",
-    "nextSteps": []
+    "nextSteps": [],
+    "uncertaintyFlags": ["The sequence and duration are indicative and depend on agency processing."]
   },
   "riskMatrix": {
     "summary": "Four risks apply: a foreign-owned-company bank account delay (medium/medium); MAS licensing delay or rejection given the Payment Services Act review, the highest-impact risk on this profile (high/high); the COMPASS diversity flag that will apply once headcount crosses 25 PMETs (low/medium); and GST registration exposure, since projected revenue already exceeds the S$1 million threshold (medium/medium).",
     "nextSteps": [
       "Start the MAS licensing assessment as early as possible given its high impact on launch timing.",
       "Register for GST now rather than waiting for the retrospective test to trigger it."
-    ]
+    ],
+    "uncertaintyFlags": ["Risk likelihoods are qualitative assessments based on the supplied facts."]
   }
 }

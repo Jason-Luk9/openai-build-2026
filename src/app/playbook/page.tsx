@@ -1,184 +1,242 @@
 'use client';
 
 import Link from 'next/link';
-import { useMemo } from 'react';
-import { ArrowLeft } from 'lucide-react';
+import { useEffect, useMemo, useState } from 'react';
 
-import { AgencyBadge } from '@/components/playbook/agency-badge';
-import { SectionReveal } from '@/components/playbook/section-reveal';
-import { BankingCard } from '@/components/playbook/sections/banking-card';
-import { EntityCard } from '@/components/playbook/sections/entity-card';
-import { LicenseTable } from '@/components/playbook/sections/license-table';
-import { RiskGrid } from '@/components/playbook/sections/risk-grid';
-import { TaxCard } from '@/components/playbook/sections/tax-card';
-import { TimelineCard } from '@/components/playbook/sections/timeline-card';
-import { VisaPlanner } from '@/components/playbook/sections/visa-planner';
+import { findNarrativeFixture } from '@/lib/fixtures';
+import { formatMoney, formatNumber, formatWeek } from '@/lib/format';
+import { mockProfileIds, type MockProfileId } from '@/lib/mock-profiles';
+import {
+  NarrativeSectionSchema,
+  NarrativesSchema,
+  type PlaybookFacts,
+  type Profile,
+  type NarrativeSection,
+  type Narratives,
+} from '@/lib/schemas';
 import { buildPlaybookFacts } from '@/lib/rules';
-import type { RegulatoryFact } from '@/lib/schemas';
 import { useProfileStore } from '@/store/use-profile-store';
 
-const anchors = [
-  ['entity', 'Entity'],
-  ['visa', 'Visa / COMPASS'],
-  ['licenses', 'Licences'],
-  ['tax', 'Tax'],
-  ['banking', 'Banking'],
-  ['timeline', 'Timeline'],
-  ['risks', 'Risks'],
-] as const;
+const sectionLabels = {
+  entity: 'Entity',
+  visaCompass: 'Visa and COMPASS',
+  licenses: 'Licences',
+  taxIncentives: 'Tax and incentives',
+  banking: 'Banking',
+  timeline: 'Timeline',
+  riskMatrix: 'Risk matrix',
+} as const;
 
-function allFacts(
-  facts: ReturnType<typeof buildPlaybookFacts>,
-): RegulatoryFact[] {
-  return [
-    ...facts.entity.regulatoryFacts,
-    ...facts.visaCompass.regulatoryFacts,
-    ...facts.visaCompass.criteria.flatMap(
-      (criterion) => criterion.regulatoryFacts,
-    ),
-    ...facts.licenses.items.flatMap((item) => item.regulatoryFacts),
-    ...facts.taxIncentives.regulatoryFacts,
-    ...facts.banking.requirements,
-  ];
+type NarrativeSource = 'loading' | 'live' | 'demo' | 'cached-demo';
+
+export default function PlaybookPage() {
+  const profile = useProfileStore((state) => state.profile);
+  const loadMockProfile = useProfileStore((state) => state.loadMockProfile);
+  const facts = useMemo(() => (profile ? buildPlaybookFacts(profile) : null), [profile]);
+  const demoMode = useMemo(
+    () => typeof window !== 'undefined' && new URLSearchParams(window.location.search).get('demo') === '1',
+    [],
+  );
+  const [narratives, setNarratives] = useState<Partial<Narratives>>({});
+  const [source, setSource] = useState<NarrativeSource>('loading');
+
+  useEffect(() => {
+    if (profile) return;
+    const params = new URLSearchParams(window.location.search);
+    const requestedMock = params.get('mock');
+    const demoMock = demoMode && !requestedMock ? 'vietstack' : requestedMock;
+    if (demoMock && mockProfileIds.includes(demoMock as MockProfileId)) {
+      loadMockProfile(demoMock as MockProfileId);
+    }
+  }, [demoMode, loadMockProfile, profile]);
+
+  useEffect(() => {
+    if (!profile || !facts) return;
+
+    const fixture = findNarrativeFixture(profile);
+    if (demoMode) return;
+
+    const controller = new AbortController();
+    async function generate() {
+      try {
+        setNarratives({});
+        setSource('loading');
+        const response = await fetch('/api/generate', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ profile, facts }),
+          signal: controller.signal,
+        });
+        if (!response.ok || !response.body) throw new Error(`Generation failed: ${response.status}`);
+
+        const reader = response.body.getReader();
+        const decoder = new TextDecoder();
+        let pending = '';
+        while (true) {
+          const result = await reader.read();
+          pending += decoder.decode(result.value ?? new Uint8Array(), { stream: !result.done });
+          const lines = pending.split('\n');
+          pending = lines.pop() ?? '';
+          for (const line of lines) {
+            if (!line.trim()) continue;
+            const event = JSON.parse(line) as {
+              type: 'narrative' | 'complete' | 'error';
+              section?: keyof typeof sectionLabels;
+              narrative?: unknown;
+              narratives?: unknown;
+              message?: string;
+            };
+            if (event.type === 'narrative' && event.section && event.narrative) {
+              const section = NarrativeSectionSchema.parse(event.narrative);
+              setNarratives((current) => ({ ...current, [event.section!]: section }));
+            }
+            if (event.type === 'complete') {
+              setNarratives(NarrativesSchema.parse(event.narratives));
+            }
+            if (event.type === 'error') throw new Error(event.message ?? 'Narrative generation failed.');
+          }
+          if (result.done) break;
+        }
+        setSource('live');
+      } catch {
+        if (controller.signal.aborted) return;
+        setNarratives(fixture);
+        setSource('cached-demo');
+      }
+    }
+
+    void generate();
+    return () => controller.abort();
+  }, [demoMode, facts, profile]);
+
+  if (!profile || !facts) {
+    return (
+      <main className="mx-auto flex min-h-screen w-full max-w-5xl items-center px-6">
+        <div>
+          <h1 className="text-3xl font-semibold text-zinc-950">No profile loaded yet.</h1>
+          <Link className="mt-6 inline-flex text-sm font-semibold text-teal-700 underline" href="/">
+            Back to SingaPath
+          </Link>
+        </div>
+      </main>
+    );
+  }
+
+  const displayedNarratives = demoMode ? findNarrativeFixture(profile) : narratives;
+  const displayedSource = demoMode ? 'demo' : source;
+
+  return (
+    <main className="mx-auto min-h-screen w-full max-w-5xl bg-zinc-50 px-6 py-10 text-zinc-950">
+      {displayedSource === 'cached-demo' ? (
+        <div className="mb-5 rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900">
+          Using cached demo narrative while live generation is unavailable.
+        </div>
+      ) : null}
+      {displayedSource === 'demo' ? (
+        <div className="mb-5 rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900">
+          Demo mode: showing the bundled narrative fixture.
+        </div>
+      ) : null}
+      <p className="text-xs font-medium tracking-[0.08em] text-teal-700 uppercase">Your playbook</p>
+      <h1 className="mt-2 text-3xl font-semibold tracking-tight">Facts first. Guidance as it arrives.</h1>
+      <p className="mt-3 max-w-2xl text-sm leading-6 text-zinc-700">
+        Every fact below comes from the rules engine. Narratives are constrained to these facts and may flag uncertainty.
+      </p>
+      <div className="mt-8 grid gap-4">
+        {(Object.keys(sectionLabels) as Array<keyof typeof sectionLabels>).map((key) => (
+          <section className="rounded-xl border border-zinc-200 bg-white p-5 shadow-sm" key={key}>
+            <div className="flex items-center justify-between gap-3">
+              <h2 className="text-lg font-semibold">{sectionLabels[key]}</h2>
+              <span className="text-xs text-zinc-500">
+                {displayedNarratives[key] ? (displayedSource === 'loading' ? 'Streaming' : 'Narrative ready') : 'Narrative pending'}
+              </span>
+            </div>
+            <FactSummary facts={facts} profile={profile} section={key} />
+            <NarrativeBody narrative={displayedNarratives[key]} />
+          </section>
+        ))}
+      </div>
+      <Link className="mt-8 inline-flex text-sm font-semibold text-teal-700 underline" href="/">
+        Back to SingaPath
+      </Link>
+    </main>
+  );
 }
 
-function Shell({ children }: { children: React.ReactNode }) {
+function FactSummary({
+  facts,
+  profile,
+  section,
+}: {
+  facts: PlaybookFacts;
+  profile: Profile;
+  section: keyof typeof sectionLabels;
+}) {
+  const lines = getFactLines(facts, profile, section);
+
   return (
-    <div className="flex min-h-screen flex-col bg-zinc-50 text-zinc-950">
-      <header className="border-b border-zinc-200 bg-white">
-        <div className="mx-auto flex w-full max-w-5xl items-center justify-between gap-4 px-5 py-5 sm:px-6 lg:px-8">
-          <Link
-            className="rounded-sm text-[17px] font-semibold tracking-[-0.035em] text-zinc-950 transition-colors hover:text-teal-700 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-teal-700"
-            href="/"
-          >
-            Singa<span className="text-teal-700">Path</span>
-          </Link>
-          <Link
-            className="inline-flex items-center gap-1 rounded-sm text-[13px] font-semibold text-teal-700 hover:text-teal-800 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-teal-700"
-            href="/"
-          >
-            <ArrowLeft aria-hidden="true" className="size-3.5" />
-            Profiles
-          </Link>
-        </div>
-      </header>
-      {children}
-      <footer className="mt-auto border-t border-zinc-200 bg-white">
-        <div className="mx-auto flex w-full max-w-5xl flex-wrap items-center justify-between gap-3 px-5 py-5 text-[12.5px] text-zinc-500 sm:px-6 lg:px-8">
-          <p>General information, not legal advice.</p>
-          <div className="flex flex-wrap gap-1.5">
-            <AgencyBadge agency="MOM" />
-            <AgencyBadge agency="ACRA" />
-            <AgencyBadge agency="IRAS" />
-            <AgencyBadge agency="MAS" />
-          </div>
-        </div>
-      </footer>
+    <div className="mt-4 rounded-lg border border-zinc-200 bg-zinc-50 px-4 py-3">
+      <p className="text-xs font-semibold tracking-[0.08em] text-zinc-500 uppercase">Facts</p>
+      <ul className="mt-2 space-y-1 text-sm leading-5 text-zinc-700">
+        {lines.map((line) => <li key={line}>{line}</li>)}
+      </ul>
     </div>
   );
 }
 
-export default function PlaybookPage() {
-  const profile = useProfileStore((state) => state.profile);
-  const facts = useMemo(
-    () => (profile ? buildPlaybookFacts(profile) : null),
-    [profile],
-  );
-  if (!profile || !facts)
-    return (
-      <Shell>
-        <main className="mx-auto flex w-full max-w-5xl flex-1 items-center px-5 py-16 sm:px-6 lg:px-8">
-          <div>
-            <p className="text-[12.5px] font-medium tracking-[0.08em] text-teal-700 uppercase">
-              Your playbook
-            </p>
-            <h1 className="mt-3 text-[30px] font-semibold tracking-[-0.04em]">
-              No profile loaded yet
-            </h1>
-            <p className="mt-3 max-w-xl text-[14.5px] leading-6 text-zinc-700">
-              Choose a mock profile or build your company profile to generate an
-              instant facts-backed playbook.
-            </p>
-            <Link
-              className="mt-6 inline-flex rounded-sm text-sm font-semibold text-teal-700 underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-teal-700"
-              href="/"
-            >
-              Back to SingaPath
-            </Link>
-          </div>
-        </main>
-      </Shell>
-    );
-  const catalog = allFacts(facts);
+function getFactLines(
+  facts: PlaybookFacts,
+  profile: Profile,
+  section: keyof typeof sectionLabels,
+): string[] {
+  switch (section) {
+    case 'entity':
+      return [
+        `Industry: ${profile.industry}; purpose: ${profile.entityPurpose}.`,
+        `Relocating founders/staff: ${formatNumber(profile.foundersRelocating)} / ${formatNumber(profile.staffRelocating)}.`,
+        facts.entity.recommendation.summary,
+        ...facts.entity.regulatoryFacts.slice(0, 2).map((fact) => `${fact.label}: ${String(fact.value)}`),
+      ];
+    case 'visaCompass':
+      return [
+        `Relocating team: ${formatNumber(profile.foundersRelocating + profile.staffRelocating)} people.`,
+        `COMPASS score: ${formatNumber(facts.visaCompass.totalScore)} / ${formatNumber(facts.visaCompass.passThreshold)} points to pass.`,
+        `Small-firm rule: ${facts.visaCompass.isSmallFirm ? 'applies' : 'does not apply'}.`,
+        ...facts.visaCompass.criteria.map((criterion) => `${criterion.id}: ${formatNumber(criterion.score)} / ${formatNumber(criterion.maximumScore)} points.`),
+      ];
+    case 'licenses':
+      return facts.licenses.items.map((item) => {
+        const fact = item.regulatoryFacts[0];
+        return `${item.name}: ${item.status}${fact ? ` — ${String(fact.value)}` : ''}.`;
+      });
+    case 'taxIncentives':
+      return [
+        `Projected Singapore revenue: ${formatMoney(profile.projectedSingaporeRevenue)}.`,
+        ...facts.taxIncentives.regulatoryFacts.map((fact) => `${fact.label}: ${String(fact.value)}`),
+      ];
+    case 'banking':
+      return facts.banking.requirements.map((fact) => `${fact.label}: ${String(fact.value)}`);
+    case 'timeline':
+      return facts.timeline.steps.map((step) => `${formatWeek(step.week)}: ${step.action}`);
+    case 'riskMatrix':
+      return facts.riskMatrix.risks.map((risk) => `${risk.title}: ${risk.likelihood} likelihood / ${risk.impact} impact.`);
+  }
+}
+
+function NarrativeBody({ narrative }: { narrative: NarrativeSection | undefined }) {
+  if (!narrative) return <div className="mt-4 h-16 animate-pulse rounded bg-zinc-100" />;
   return (
-    <Shell>
-      <main className="mx-auto w-full max-w-5xl flex-1 px-5 pb-10 sm:px-6 lg:px-8">
-        <section className="py-7 sm:py-9">
-          <p className="text-[12.5px] font-medium tracking-[0.08em] text-teal-700 uppercase">
-            Your Singapore entry plan
-          </p>
-          <h1 className="mt-2 text-[30px] leading-tight font-semibold tracking-[-0.04em] text-zinc-950 sm:text-[36px]">
-            Your facts-backed market-entry playbook.
-          </h1>
-          <p className="mt-3 max-w-2xl text-[14.5px] leading-6 text-zinc-700">
-            Every requirement below is computed from your profile and linked to
-            its official source.
-          </p>
-        </section>
-        <nav
-          aria-label="Playbook sections"
-          className="sticky top-0 z-20 -mx-5 border-y border-zinc-200 bg-zinc-50/95 px-5 py-3 backdrop-blur sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8"
-        >
-          <div className="flex gap-2 overflow-x-auto pb-0.5">
-            {anchors.map(([id, label]) => (
-              <a
-                className="shrink-0 rounded-full border border-zinc-200 bg-white px-3 py-1.5 text-[12.5px] font-medium text-zinc-700 transition-colors hover:border-teal-300 hover:text-teal-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-700"
-                href={`#${id}`}
-                key={id}
-              >
-                {label}
-              </a>
-            ))}
-          </div>
-        </nav>
-        <div className="mt-6 grid gap-5 lg:grid-cols-2">
-          <div className="scroll-mt-24" id="entity">
-            <SectionReveal delay={0}>
-              <EntityCard facts={facts.entity} />
-            </SectionReveal>
-          </div>
-          <div className="scroll-mt-24" id="visa">
-            <SectionReveal delay={0.08}>
-              <VisaPlanner facts={facts.visaCompass} />
-            </SectionReveal>
-          </div>
-          <div className="scroll-mt-24 lg:col-span-2" id="licenses">
-            <SectionReveal delay={0.16}>
-              <LicenseTable facts={facts.licenses} />
-            </SectionReveal>
-          </div>
-          <div className="scroll-mt-24" id="tax">
-            <SectionReveal delay={0.24}>
-              <TaxCard facts={facts.taxIncentives} />
-            </SectionReveal>
-          </div>
-          <div className="scroll-mt-24" id="banking">
-            <SectionReveal delay={0.32}>
-              <BankingCard facts={facts.banking} />
-            </SectionReveal>
-          </div>
-          <div className="scroll-mt-24 lg:col-span-2" id="timeline">
-            <SectionReveal delay={0.4}>
-              <TimelineCard factCatalog={catalog} facts={facts.timeline} />
-            </SectionReveal>
-          </div>
-          <div className="scroll-mt-24 lg:col-span-2" id="risks">
-            <SectionReveal delay={0.48}>
-              <RiskGrid factCatalog={catalog} facts={facts.riskMatrix} />
-            </SectionReveal>
-          </div>
-        </div>
-      </main>
-    </Shell>
+    <div className="mt-4 space-y-3 text-sm leading-6 text-zinc-700">
+      <p>{narrative.summary}</p>
+      {narrative.callout ? <p className="rounded-md border-l-2 border-teal-700 bg-teal-50 px-3 py-2">{narrative.callout}</p> : null}
+      {narrative.nextSteps.length ? (
+        <ul className="list-disc space-y-1 pl-5">
+          {narrative.nextSteps.map((step) => <li key={step}>{step}</li>)}
+        </ul>
+      ) : null}
+      {narrative.uncertaintyFlags.length ? (
+        <p className="text-xs text-amber-700">Uncertainty: {narrative.uncertaintyFlags.join(' ')}</p>
+      ) : null}
+    </div>
   );
 }

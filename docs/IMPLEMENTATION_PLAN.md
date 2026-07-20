@@ -6,7 +6,7 @@ SingaPath turns an ASEAN founder's 5-minute company profile into a complete Sing
 
 Build starts from an empty repository (Node 20+ required for Next.js 15). Three decisions are locked:
 
-- **AI provider: Gemini 2.5 Flash via Google AI Studio free tier** (`@ai-sdk/google`), with an optional Groq free-tier fallback. The Vercel AI SDK keeps the app provider-agnostic — all model naming lives in one config file, so switching providers later (e.g. to OpenAI) is a one-line change plus an env var.
+- **AI provider: Gemini 3 Flash Preview via Google AI Studio** (`@ai-sdk/google`), with an optional Groq fallback. The Vercel AI SDK keeps the app provider-agnostic — all model naming lives in one config file, so switching providers later (e.g. to OpenAI) is a one-line change plus an env var.
 - **Timeline: 2–3 days of build** — all 6 outputs plus a risk matrix, 3 polished mock profiles, COMPASS chart, PDF export.
 - **"Ask SingaPath" chat: stretch goal** — built last, cut first if behind.
 
@@ -58,7 +58,7 @@ Intake wizard (5 steps)  ─────┤
         Playbook page renders all fact cards immediately
                               ▼
         POST /api/generate { profile, facts }    ← edge route
-              streamObject(gemini-2.5-flash, NarrativesSchema)
+              streamObject(gemini-3-flash-preview, NarrativesSchema)
                               ▼
         useObject streams section narratives → fade into cards
                               ▼
@@ -68,9 +68,12 @@ Intake wizard (5 steps)  ─────┤
 
 ### AI layer
 
-- One config file (`src/lib/ai.ts`) is the only place models are named: default `google('gemini-2.5-flash')`. Optional fallback chain on error/429: Groq (`@ai-sdk/groq`, free tier) → local fixtures. Swapping providers later touches only this file.
+- One config file (`src/lib/ai.ts`) is the only place models are named: default Gemini 3 Flash Preview. Optional fallback chain on error/429: Groq (`@ai-sdk/groq`, free tier) → local fixtures. Swapping providers later touches only this file.
 - System prompt: "You receive precomputed regulatory facts. Never state a number, fee, timeline, or requirement not present in the facts. Flag uncertainty explicitly." Low temperature (~0.3).
 - **Demo mode**: pre-generated narrative fixtures per mock profile in `src/lib/fixtures/`. Triggered by `?demo=1` or automatically on API error, with an amber "cached demo narrative" banner. Facts always work offline since rules run client-side.
+- **Implemented stream contract**: `POST /api/generate` accepts `{ profile, facts }`, validates both with Zod, and emits newline-delimited narrative events. Each event is accepted only after its section passes `NarrativeSectionSchema`; the final object must pass `NarrativesSchema`. Facts are rendered independently and are never part of the model output.
+- **Provider configuration**: Gemini is attempted first; Groq is included only when both its server-side key and model environment variable are configured. Provider credentials and model values remain deployment environment placeholders and are never prefixed with `NEXT_PUBLIC_`.
+- **Failure state**: a non-2xx response, rate limit, malformed event, timeout, or interrupted stream preserves the fact cards, loads the matching fixture, and shows the cached-demo banner.
 - Chat (stretch): `useChat` + 2–3 function tools that wrap rules-engine functions, so what-if answers are deterministic.
 - Env vars: `GOOGLE_GENERATIVE_AI_API_KEY` (aistudio.google.com — free, no card), optional `GROQ_API_KEY`. Server-side only, never `NEXT_PUBLIC_`.
 

@@ -42,6 +42,17 @@ function isRegulatoryFact(value: unknown): value is RegulatoryFact {
   );
 }
 
+function isSourceReference(
+  value: unknown,
+): value is { factId: string; source: { url: string; lastVerified: string } } {
+  if (typeof value !== 'object' || value === null) return false;
+  const record = value as Record<string, unknown>;
+  if (typeof record.factId !== 'string') return false;
+  if (typeof record.source !== 'object' || record.source === null) return false;
+  const source = record.source as Record<string, unknown>;
+  return typeof source.url === 'string' && typeof source.lastVerified === 'string';
+}
+
 function collectFacts(
   node: unknown,
   domain: string,
@@ -67,21 +78,6 @@ function collectFacts(
   for (const value of Object.values(node)) {
     collectFacts(value, domain, out);
   }
-}
-
-/**
- * Walks a computed PlaybookFacts section collecting every fact id it
- * cites — whether embedded as a full RegulatoryFact or referenced via a
- * `{ factId, source }` SourceReference — detected structurally against the
- * real schemas rather than by hand-picked field names, so this keeps
- * matching if either schema's shape changes.
- */
-function isSourceReference(
-  value: unknown,
-): value is { factId: string; source: unknown } {
-  if (typeof value !== 'object' || value === null) return false;
-  const record = value as Record<string, unknown>;
-  return typeof record.factId === 'string' && 'source' in record;
 }
 
 function collectCitedFactIds(node: unknown, out: Set<string>): void {

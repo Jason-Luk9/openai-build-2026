@@ -268,7 +268,8 @@ export const NarrativeSectionSchema = z
   .object({
     summary: nonEmptyText('a narrative summary').max(1_200),
     callout: z.string().trim().min(1).max(300).optional(),
-    nextSteps: z.array(nonEmptyText('a next step').max(240)).max(3),
+    nextSteps: z.array(nonEmptyText('a next step').max(240)).max(5),
+    uncertaintyFlags: z.array(nonEmptyText('an uncertainty flag').max(240)).max(5),
   })
   .strict();
 
@@ -285,6 +286,13 @@ export const NarrativesSchema = z
   .strict();
 
 export const StreamingNarrativesSchema = NarrativesSchema.partial();
+
+export const GenerateRequestSchema = z
+  .object({
+    profile: ProfileSchema,
+    facts: PlaybookFactsSchema,
+  })
+  .strict();
 
 const EntityKnowledgeEntrySchema = z
   .object({
@@ -404,6 +412,7 @@ export type RiskMatrixFacts = z.infer<typeof RiskMatrixFactsSchema>;
 export type Narratives = z.infer<typeof NarrativesSchema>;
 export type StreamingNarratives = z.infer<typeof StreamingNarrativesSchema>;
 export type NarrativeSection = z.infer<typeof NarrativeSectionSchema>;
+export type GenerateRequest = z.infer<typeof GenerateRequestSchema>;
 export type VisaCompassFacts = z.infer<typeof VisaCompassFactsSchema>;
 export type EntitiesKnowledge = z.infer<typeof EntitiesKnowledgeSchema>;
 export type CompassKnowledge = z.infer<typeof CompassKnowledgeSchema>;
