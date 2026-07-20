@@ -143,7 +143,12 @@ export function StepEntrePassEvidence({
                       aria-invalid={Boolean(detailError)}
                       className="mt-2 min-h-24 w-full rounded-lg border border-zinc-300 bg-white px-3 py-2 text-sm outline-none focus-visible:border-teal-700 focus-visible:ring-3 focus-visible:ring-teal-700/25"
                       maxLength={500}
-                      {...register(`entrePassEvidence.${item.detailKey}`)}
+                      {...register(`entrePassEvidence.${item.detailKey}`, {
+                        setValueAs: (value) =>
+                          typeof value === 'string' && value.trim() === ''
+                            ? undefined
+                            : value,
+                      })}
                     />
                     <span className="mt-1.5 block text-[12.5px] font-normal text-zinc-500">
                       Do not include links or file references.
