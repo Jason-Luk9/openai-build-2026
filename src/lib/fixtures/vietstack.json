@@ -1,0 +1,49 @@
+{
+  "entity": {
+    "summary": "Incorporate a private company limited by shares \u2014 ACRA requires at least one director. Having raised S$150,000 from a recognised regional VC fund, VietStack clears the EntrePass innovator track's venture-funding bar (at least S$100,000 from a single round from an eligible investor), so the founders can apply for an EntrePass alongside incorporation rather than needing a separate Employment Pass sponsor from day one.",
+    "callout": "S$150,000 raised clears the S$100,000 EntrePass venture-funding threshold with room to spare.",
+    "nextSteps": [
+      "Appoint at least one director to satisfy ACRA's incorporation requirement.",
+      "File the EntrePass innovator-track application citing the VC funding round."
+    ]
+  },
+  "visaCompass": {
+    "summary": "VietStack relocates 10 PMETs in total (2 founders, 8 staff) \u2014 under the 25-PMET small-firm threshold \u2014 so C3 (Diversity) and C4 (Support for local employment) both default to the neutral 10-point score instead of being scored on actual hiring mix. That's the small-firm nuance: a young team isn't penalised for not yet having a diverse or majority-local workforce. Combined with an assumed qualifying non-financial-services salary (C1: 20) and a recognised degree (C2: 10), the illustrative total is 50 points, clearing the 40-point pass threshold.",
+    "callout": "Money moment: below 25 PMETs, diversity and local-hiring scoring defaults to neutral \u2014 VietStack passes today on that basis, not because it's already diverse.",
+    "nextSteps": [
+      "Confirm the actual offered salary and applicant qualifications before filing \u2014 C1/C2 here assume a qualifying benchmark, not a real candidate.",
+      "Plan hiring diversity and local-hiring support well before headcount reaches 25 PMETs, since the neutral default disappears at that point."
+    ]
+  },
+  "licenses": {
+    "summary": "SaaS doesn't have a single named licence in the knowledge base \u2014 the government's licence finder needs to be checked against VietStack's exact business activity before operating, since requirements vary by the specific service offered.",
+    "nextSteps": [
+      "Run VietStack's specific SaaS activity through the GoBusiness licence finder before launch."
+    ]
+  },
+  "taxIncentives": {
+    "summary": "Standard Singapore tax facts apply: 17% flat corporate rate, the first-three-years start-up exemption (75% of the first S$100,000, 50% of the next S$100,000), and 9% GST. Because VietStack is setting up as a regional HQ, it's also a candidate for EDB's Development and Expansion Incentive \u2014 a discretionary concessionary 5-15% tax rate on qualifying regional/global HQ income once operations are established. At a projected S$1,200,000 in Singapore revenue, VietStack is also above the S$1 million GST registration threshold.",
+    "callout": "Regional-HQ setups like VietStack's can apply to EDB for a concessionary tax rate on qualifying HQ income \u2014 approval isn't automatic.",
+    "nextSteps": [
+      "Register for GST ahead of the S$1 million threshold already being crossed.",
+      "Scope an EDB Development and Expansion Incentive application once regional-HQ operations are established."
+    ]
+  },
+  "banking": {
+    "summary": "As a foreign-owned company, VietStack should expect enhanced due diligence and a longer account-opening review \u2014 DBS requires ACRA incorporation documents, signatory identity/address verification, and board resolutions up front.",
+    "nextSteps": [
+      "Prepare ACRA documents and signatory ID/address verification before the first bank meeting."
+    ]
+  },
+  "timeline": {
+    "summary": "Roughly a 6-week runway: incorporate in week 1, run the SaaS activity through the licence finder in week 2, open the bank account in week 3 (padded for foreign-owned due diligence), submit the EntrePass and staff Employment Pass applications in week 4, and register for GST in week 6 given projected revenue already exceeds the S$1 million threshold.",
+    "nextSteps": []
+  },
+  "riskMatrix": {
+    "summary": "Three risks stand out: a foreign-owned-company bank account delay (medium/medium); the COMPASS diversity flag that will apply once headcount crosses 25 PMETs, since today's neutral C3/C4 scoring is a small-firm default, not a permanent one (low/medium); and GST registration exposure, since projected revenue already exceeds the S$1 million threshold (medium/medium).",
+    "nextSteps": [
+      "Register for GST now rather than waiting for the retrospective test to trigger it.",
+      "Start planning nationality-mix and local-hiring practices well ahead of the 25-PMET mark."
+    ]
+  }
+}

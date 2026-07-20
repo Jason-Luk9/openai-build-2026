@@ -8,10 +8,12 @@
  * any file is malformed against its schema, or if any fact is missing a
  * source URL or last-verified date (both are required by `SourceSchema`).
  *
- * This logs every bundled fact rather than scoping to the three demo
- * profiles (Warung Digital, VietStack, PayFlip) — those don't exist yet.
- * This is a superset that will keep covering their facts once the
- * mock-profiles ticket lands.
+ * Phase 1 logs every bundled fact (a superset covering the full knowledge
+ * corpus, useful independent of any specific profile). Phase 2 scopes down:
+ * it computes `buildPlaybookFacts` for each of the 3 demo mock profiles
+ * (Warung Digital, VietStack, PayFlip) and logs exactly which facts each
+ * one actually cites, grouped by dashboard section — this is the
+ * verification log the demo profiles ticket requires.
  */
 import type { RegulatoryFact } from '../src/lib/schemas';
 
@@ -63,6 +65,70 @@ function collectFacts(
   for (const value of Object.values(node)) {
     collectFacts(value, domain, out);
   }
+}
+
+/**
+ * Walks a computed PlaybookFacts section collecting every fact id it
+ * cites — whether embedded as a full RegulatoryFact or referenced via a
+ * `{ factId, source }` SourceReference — detected structurally against the
+ * real schemas rather than by hand-picked field names, so this keeps
+ * matching if either schema's shape changes.
+ */
+function collectCitedFactIds(node: unknown, out: Set<string>): void {
+  if (Array.isArray(node)) {
+    for (const item of node) collectCitedFactIds(item, out);
+    return;
+  }
+  if (typeof node !== "object" || node === null) return;
+
+  if (isRegulatoryFact(node)) {
+    out.add(node.id);
+    return;
+  }
+  if (isSourceReference(node)) {
+    out.add(node.factId);
+    return;
+  }
+
+  for (const value of Object.values(node)) {
+    collectCitedFactIds(value, out);
+  }
+}
+
+function logProfileFacts(
+  profileId: string,
+  facts: PlaybookFacts,
+  factsById: Map<string, FactLogEntry>,
+): string[] {
+  const problems: string[] = [];
+
+  console.log(`\n=== ${profileId} ===`);
+  for (const [section, sectionFacts] of Object.entries(facts) as Array<
+    [keyof PlaybookFacts, unknown]
+  >) {
+    const citedIds = new Set<string>();
+    collectCitedFactIds(sectionFacts, citedIds);
+
+    if (citedIds.size === 0) {
+      problems.push(`${profileId}.${section} cites zero regulatory facts`);
+      continue;
+    }
+
+    console.log(`  [${section}] ${citedIds.size} fact(s) cited`);
+    for (const id of [...citedIds].sort()) {
+      const entry = factsById.get(id);
+      if (!entry) {
+        problems.push(
+          `${profileId}.${section} cites unknown fact id "${id}" (not present in bundledKnowledge)`,
+        );
+        continue;
+      }
+      console.log(`    - ${entry.id} — ${entry.label}`);
+      console.log(`      source: ${entry.url} (verified ${entry.lastVerified})`);
+    }
+  }
+
+  return problems;
 }
 
 async function main(): Promise<void> {

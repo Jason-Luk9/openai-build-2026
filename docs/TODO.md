@@ -22,13 +22,13 @@ It is ordered so that factual accuracy and the deterministic rules engine land b
 
 ## Deterministic rules engine
 
-- [ ] Implement entity recommendation.
-- [ ] Implement COMPASS scoring, including benchmark, threshold-edge, and small-firm cases.
-- [ ] Implement licence lookup for F&B, SaaS, fintech, retail, medical devices, and a generic fallback.
-- [ ] Implement tax and incentive matching.
-- [ ] Implement banking roadmap, timeline builder, and risk assessor.
-- [ ] Compose all modules through `buildPlaybookFacts(profile)`.
-- [ ] Add Vitest golden tests for every rules module.
+- [x] Implement entity recommendation. (`src/lib/rules/entity-recommender.ts`; also surfaces qualifying EntrePass evidence, since `PlaybookFactsSchema` has no separate EntrePass section.)
+- [x] Implement COMPASS scoring, including benchmark, threshold-edge, and small-firm cases. (`src/lib/rules/compass-scorer.ts`. `isSmallFirm` = `foundersRelocating + staffRelocating < 25` — see the doc comment for why. C1/C2/C5/C6 use a fixed "qualifying benchmark" assumption since `Profile` captures no candidate salary/qualifications/shortage-occupation data; each criterion's `assessment` text states that assumption explicitly. `outcome` is `"not-applicable"` when no staff are relocating, since there's no Employment Pass applicant to score.)
+- [x] Implement licence lookup for F&B, SaaS, fintech, retail, medical devices, and a generic fallback. (`src/lib/rules/license-lookup.ts`.)
+- [x] Implement tax and incentive matching. (`src/lib/rules/tax-matcher.ts`. The EDB Development and Expansion Incentive is surfaced as an opportunity only for `regional-hq`/`rd-ip-hub` purposes, since the fact's own description scopes it to regional/global HQ activity; `industryOpportunities` is empty for every industry in the current knowledge base, a pre-existing content gap, not filled with invented facts.)
+- [x] Implement banking roadmap, timeline builder, and risk assessor. (`src/lib/rules/{banking-advisor,timeline-builder,risk-assessor}.ts`. Timeline steps and risks only ever cite facts already surfaced elsewhere in that profile's `PlaybookFacts` — no new facts introduced. Both branch on the S$1,000,000 GST registration threshold and the fintech/MAS licensing flag; risk-assessor also raises a forward-looking "COMPASS diversity flag once you cross 25 PMETs" risk for small firms.)
+- [x] Compose all modules through `buildPlaybookFacts(profile)`. (`src/lib/rules/index.ts`.)
+- [x] Add Vitest golden tests for every rules module. (`tests/rules/*.test.ts`, one file per module, plus `build-playbook-facts.test.ts` (composition, all 3 mock profiles validate against `PlaybookFactsSchema` with non-empty facts in all 7 sections) and `fixtures.test.ts` (narrative fixtures validate against `NarrativesSchema` and introduce no numbers absent from computed facts). Run via `pnpm test`.)
 
 ## Product experience
 
