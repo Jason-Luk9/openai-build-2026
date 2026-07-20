@@ -1,7 +1,7 @@
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm, useWatch } from 'react-hook-form';
+import { Controller, useForm, useWatch } from 'react-hook-form';
 import { z } from 'zod';
 
 import { Button } from '@/components/ui/button';
@@ -84,6 +84,8 @@ export function StepEntrePassEvidence({
         <div className="mt-6 space-y-5">
           {evidenceItems.map((item) => {
             const isYes = evidence?.[item.booleanKey] ?? false;
+            const choiceError =
+              errors.entrePassEvidence?.[item.booleanKey]?.message;
             const detailError =
               errors.entrePassEvidence?.[item.detailKey]?.message;
             return (
@@ -100,42 +102,55 @@ export function StepEntrePassEvidence({
                   role="radiogroup"
                   aria-label={item.question}
                 >
-                  <label className="cursor-pointer">
-                    <input
-                      className="peer sr-only"
-                      type="radio"
-                      value="true"
-                      {...register(`entrePassEvidence.${item.booleanKey}`, {
-                        setValueAs: (value) => value === 'true',
-                      })}
-                    />
-                    <span className="inline-flex rounded-md border border-zinc-200 px-3 py-1.5 text-sm font-medium text-zinc-700 peer-checked:border-teal-700 peer-checked:bg-teal-50 peer-checked:text-teal-800 focus-within:outline-2 focus-within:outline-offset-3 focus-within:outline-teal-700">
-                      Yes
-                    </span>
-                  </label>
-                  <label className="cursor-pointer">
-                    <input
-                      className="peer sr-only"
-                      type="radio"
-                      value="false"
-                      {...register(`entrePassEvidence.${item.booleanKey}`, {
-                        setValueAs: (value) => value === 'true',
-                        onChange: (event) => {
-                          if (event.target.value === 'false') {
-                            setValue(
-                              `entrePassEvidence.${item.detailKey}`,
-                              undefined,
-                            );
-                            onClearDetail(item.detailKey);
-                          }
-                        },
-                      })}
-                    />
-                    <span className="inline-flex rounded-md border border-zinc-200 px-3 py-1.5 text-sm font-medium text-zinc-700 peer-checked:border-teal-700 peer-checked:bg-teal-50 peer-checked:text-teal-800 focus-within:outline-2 focus-within:outline-offset-3 focus-within:outline-teal-700">
-                      No
-                    </span>
-                  </label>
+                  <Controller
+                    control={control}
+                    name={`entrePassEvidence.${item.booleanKey}`}
+                    render={({ field }) => (
+                      <>
+                        <label className="cursor-pointer">
+                          <input
+                            checked={field.value === true}
+                            className="peer sr-only"
+                            name={field.name}
+                            onBlur={field.onBlur}
+                            onChange={() => field.onChange(true)}
+                            ref={field.ref}
+                            type="radio"
+                          />
+                          <span className="inline-flex rounded-md border border-zinc-200 px-3 py-1.5 text-sm font-medium text-zinc-700 peer-checked:border-teal-700 peer-checked:bg-teal-50 peer-checked:text-teal-800 focus-within:outline-2 focus-within:outline-offset-3 focus-within:outline-teal-700">
+                            Yes
+                          </span>
+                        </label>
+                        <label className="cursor-pointer">
+                          <input
+                            checked={field.value === false}
+                            className="peer sr-only"
+                            name={field.name}
+                            onBlur={field.onBlur}
+                            onChange={() => {
+                              field.onChange(false);
+                              setValue(
+                                `entrePassEvidence.${item.detailKey}`,
+                                undefined,
+                                { shouldDirty: true },
+                              );
+                              onClearDetail(item.detailKey);
+                            }}
+                            type="radio"
+                          />
+                          <span className="inline-flex rounded-md border border-zinc-200 px-3 py-1.5 text-sm font-medium text-zinc-700 peer-checked:border-teal-700 peer-checked:bg-teal-50 peer-checked:text-teal-800 focus-within:outline-2 focus-within:outline-offset-3 focus-within:outline-teal-700">
+                            No
+                          </span>
+                        </label>
+                      </>
+                    )}
+                  />
                 </div>
+                {choiceError && (
+                  <p className="mt-2 text-[12.5px] text-red-600" role="alert">
+                    {choiceError}
+                  </p>
+                )}
                 {isYes && (
                   <label className="mt-4 block text-sm font-medium text-zinc-800">
                     Supporting details
@@ -143,7 +158,12 @@ export function StepEntrePassEvidence({
                       aria-invalid={Boolean(detailError)}
                       className="mt-2 min-h-24 w-full rounded-lg border border-zinc-300 bg-white px-3 py-2 text-sm outline-none focus-visible:border-teal-700 focus-visible:ring-3 focus-visible:ring-teal-700/25"
                       maxLength={500}
-                      {...register(`entrePassEvidence.${item.detailKey}`)}
+                      {...register(`entrePassEvidence.${item.detailKey}`, {
+                        setValueAs: (value) =>
+                          typeof value === 'string' && value.trim() === ''
+                            ? undefined
+                            : value,
+                      })}
                     />
                     <span className="mt-1.5 block text-[12.5px] font-normal text-zinc-500">
                       Do not include links or file references.

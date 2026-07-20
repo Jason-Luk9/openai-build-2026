@@ -15,6 +15,16 @@ import { useProfileStore } from '@/store/use-profile-store';
 
 const stepCount = 5;
 
+const fieldStep: Record<string, number> = {
+  homeCountry: 1,
+  industry: 2,
+  entityPurpose: 3,
+  foundersRelocating: 4,
+  staffRelocating: 4,
+  projectedSingaporeRevenue: 4,
+  entrePassEvidence: 5,
+};
+
 export function WizardShell() {
   const router = useRouter();
   const reduceMotion = useReducedMotion();
@@ -23,12 +33,15 @@ export function WizardShell() {
   const patchDraft = useProfileStore((state) => state.patchDraft);
   const setProfile = useProfileStore((state) => state.setProfile);
   const [direction, setDirection] = useState(1);
+  const [submitError, setSubmitError] = useState<string | null>(null);
 
   function advance() {
+    setSubmitError(null);
     setDirection(1);
     setStep((current) => Math.min(current + 1, stepCount));
   }
   function back() {
+    setSubmitError(null);
     setDirection(-1);
     setStep((current) => Math.max(current - 1, 1));
   }
@@ -46,11 +59,19 @@ export function WizardShell() {
     patchDraft(values);
     const result = ProfileSchema.safeParse(completeDraft);
     if (!result.success) {
-      if (process.env.NODE_ENV !== 'production')
-        console.error(
-          'Validated intake draft did not match ProfileSchema.',
-          result.error.flatten(),
-        );
+      const firstInvalidField = Object.keys(
+        result.error.flatten().fieldErrors,
+      )[0];
+      const targetStep = firstInvalidField
+        ? (fieldStep[firstInvalidField] ?? 1)
+        : 1;
+      setSubmitError(
+        'Some earlier answers still need attention. Please review the highlighted step.',
+      );
+      if (targetStep !== step) {
+        setDirection(targetStep < step ? -1 : 1);
+        setStep(targetStep);
+      }
       return;
     }
     setProfile(result.data);
@@ -86,6 +107,14 @@ export function WizardShell() {
             className="mt-3"
             value={step * 20}
           />
+          {submitError ? (
+            <p
+              className="mt-4 rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-[12.5px] text-red-700"
+              role="alert"
+            >
+              {submitError}
+            </p>
+          ) : null}
           <div className="mt-8 overflow-hidden">
             <AnimatePresence custom={direction} initial={false} mode="wait">
               <motion.div
