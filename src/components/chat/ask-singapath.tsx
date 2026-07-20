@@ -180,19 +180,15 @@ export function AskSingapath({ profile }: { profile: Profile }) {
                 clearError();
                 setMessages([]);
               }}
-              size="icon"
-              variant="ghost"
             >
-              <span className="text-xs font-semibold">Clear</span>
+              Clear
             </Button>
           ) : null}
           <Button
             aria-label="Close Ask SingaPath chat"
             aria-controls="ask-singapath-dialog"
-            aria-expanded={true}
             onClick={() => setOpen(false)}
             size="icon"
-            variant="ghost"
           >
             <X aria-hidden="true" />
           </Button>
