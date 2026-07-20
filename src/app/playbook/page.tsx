@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { useEffect, useMemo, useState } from 'react';
 
+import { PlaybookPdfDownload } from '@/components/pdf/playbook-pdf';
 import { findNarrativeFixture } from '@/lib/fixtures';
 import { formatMoney, formatNumber, formatWeek } from '@/lib/format';
 import { mockProfileIds, type MockProfileId } from '@/lib/mock-profiles';
@@ -142,6 +143,9 @@ export default function PlaybookPage() {
       <p className="mt-3 max-w-2xl text-sm leading-6 text-zinc-700">
         Every fact below comes from the rules engine. Narratives are constrained to these facts and may flag uncertainty.
       </p>
+      <div className="mt-5">
+        <PlaybookPdfDownload facts={facts} profile={profile} />
+      </div>
       <div className="mt-8 grid gap-4">
         {(Object.keys(sectionLabels) as Array<keyof typeof sectionLabels>).map((key) => (
           <section className="rounded-xl border border-zinc-200 bg-white p-5 shadow-sm" key={key}>
