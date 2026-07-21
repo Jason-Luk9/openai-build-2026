@@ -28,6 +28,7 @@
   },
   "taxIncentives": {
     "summary": "Singapore taxes chargeable income at a flat 17% corporate rate, with 75% of the first S$100,000 and 50% of the next S$100,000 exempt for qualifying companies in their first three years of assessment. GST is 9% on standard-rated supplies, but registration is only compulsory once taxable turnover exceeds S$1 million \u2014 at the supplied projected Singapore revenue, Warung Digital is under that threshold for now.",
+    "callout": null,
     "nextSteps": [
       "Claim the start-up tax exemption for the first three years of assessment.",
       "Re-check the S$1 million GST registration threshold as revenue grows."
@@ -36,6 +37,7 @@
   },
   "banking": {
     "summary": "As a foreign-owned company, expect enhanced due diligence and a longer review when opening a business bank account \u2014 DBS requires ACRA incorporation documents, signatory identity/address verification, and board resolutions up front.",
+    "callout": null,
     "nextSteps": [
       "Prepare ACRA documents and signatory ID/address verification before the first bank meeting.",
       "Start the account-opening process early to absorb the longer foreign-owned review window."
@@ -44,11 +46,13 @@
   },
   "timeline": {
     "summary": "A roughly 4-week runway: reserve the name and incorporate in week 1, apply for the Food Shop Licence in week 2, open the corporate bank account in week 3 (padded for foreign-owned due diligence), and submit both the EntrePass and any staff Employment Pass applications in week 4.",
+    "callout": null,
     "nextSteps": [],
     "uncertaintyFlags": ["The sequence and duration are indicative and depend on agency and bank processing."]
   },
   "riskMatrix": {
     "summary": "The two live risks are a foreign-owned-company bank account delay (medium likelihood, medium impact \u2014 mitigated by preparing documents early) and a lower-likelihood, medium-impact flag: once headcount crosses 25 PMETs, the neutral COMPASS scoring on C3/C4 no longer applies, so future Employment Pass applications will need real diversity and local-hiring facts behind them.",
+    "callout": null,
     "nextSteps": [
       "Prepare foreign-owned-company banking documents ahead of incorporation.",
       "Plan nationality-mix and local-hiring practices well before headcount nears 25 PMETs."

@@ -54,8 +54,10 @@
   --font-mono: var(--font-ibm-plex-mono), ui-monospace, monospace;
 }
 
-* {
-  border-color: var(--border);
+@layer base {
+  * {
+    border-color: var(--border);
+  }
 }
 
 html {

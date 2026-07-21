@@ -1,7 +1,7 @@
 import { formatVerifiedDate } from '@/lib/format';
 import type { RegulatoryFact, SourceReference } from '@/lib/schemas';
 
-type FooterSource = {
+export type FooterSource = {
   label: string;
   url: string;
   lastVerified: string;
@@ -40,4 +40,15 @@ export function sourcesFromReferences(
       };
     }),
   );
+}
+
+/**
+ * 1-based position of a fact's source in a deduped `FooterSource[]` list, for
+ * matching an inline citation mark to its numbered entry in `SourcesFooter`.
+ */
+export function sourceNumberFor(
+  fact: Pick<RegulatoryFact, 'source'>,
+  sources: FooterSource[],
+): number {
+  return sources.findIndex((source) => source.url === fact.source.url) + 1;
 }

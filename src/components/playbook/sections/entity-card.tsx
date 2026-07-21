@@ -3,7 +3,7 @@ import { Building2 } from 'lucide-react';
 import { AgencyBadge } from '@/components/playbook/agency-badge';
 import { NarrativeBlock, SectionCard } from '@/components/playbook/section-card';
 import { sourcesFromFacts } from '@/components/playbook/source-utils';
-import { SourcesFooter } from '@/components/playbook/sources-footer';
+import { SourceMark, SourcesFooter } from '@/components/playbook/sources-footer';
 import { formatNumber } from '@/lib/format';
 import type { EntityFacts, NarrativeSection } from '@/lib/schemas';
 
@@ -14,12 +14,11 @@ export function EntityCard({
   facts: EntityFacts;
   narrative?: NarrativeSection;
 }) {
+  const sources = sourcesFromFacts(facts.regulatoryFacts);
   return (
     <SectionCard
       agencies={<AgencyBadge agency="ACRA" />}
-      footer={
-        <SourcesFooter sources={sourcesFromFacts(facts.regulatoryFacts)} />
-      }
+      footer={<SourcesFooter sources={sources} />}
       icon={Building2}
       title="Entity"
     >
@@ -43,6 +42,7 @@ export function EntityCard({
           <div className="flex gap-4 py-3" key={fact.id}>
             <dt className="min-w-0 text-[13px] leading-5 text-muted-foreground">
               {fact.label}
+              <SourceMark fact={fact} sources={sources} />
             </dt>
             <dd className="ml-auto font-mono text-right text-[13px] font-medium text-foreground tabular-nums">
               {typeof fact.value === 'number'

@@ -56,6 +56,7 @@ export function StepTeamRevenue({
             Founders relocating
             <input
               aria-invalid={Boolean(errors.foundersRelocating)}
+              autoComplete="off"
               className={fieldClass}
               min="0"
               step="1"
@@ -67,6 +68,7 @@ export function StepTeamRevenue({
             Staff relocating
             <input
               aria-invalid={Boolean(errors.staffRelocating)}
+              autoComplete="off"
               className={fieldClass}
               min="0"
               step="1"
@@ -90,6 +92,7 @@ export function StepTeamRevenue({
           <span className="font-normal text-muted-foreground">(S$)</span>
           <Input
             aria-invalid={Boolean(errors.projectedSingaporeRevenue)}
+            autoComplete="off"
             className={fieldClass}
             min="0"
             step="1"

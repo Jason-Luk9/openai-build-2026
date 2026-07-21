@@ -2,7 +2,7 @@ import { Building } from 'lucide-react';
 
 import { NarrativeBlock, SectionCard } from '@/components/playbook/section-card';
 import { sourcesFromFacts } from '@/components/playbook/source-utils';
-import { SourcesFooter } from '@/components/playbook/sources-footer';
+import { SourceMark, SourcesFooter } from '@/components/playbook/sources-footer';
 import { formatNumber } from '@/lib/format';
 import type { BankingFacts, NarrativeSection } from '@/lib/schemas';
 
@@ -13,9 +13,10 @@ export function BankingCard({
   facts: BankingFacts;
   narrative?: NarrativeSection;
 }) {
+  const sources = sourcesFromFacts(facts.requirements);
   return (
     <SectionCard
-      footer={<SourcesFooter sources={sourcesFromFacts(facts.requirements)} />}
+      footer={<SourcesFooter sources={sources} />}
       icon={Building}
       title="Banking"
     >
@@ -27,7 +28,8 @@ export function BankingCard({
           <ul className="mt-2 space-y-2 text-[13px] leading-5 text-foreground">
             {facts.requirements.map((fact) => (
               <li key={fact.id}>
-                <span className="font-medium text-foreground">{fact.label}:</span>{' '}
+                <span className="font-medium text-foreground">{fact.label}:</span>
+                <SourceMark fact={fact} sources={sources} />{' '}
                 <span className="tabular-nums">
                   {typeof fact.value === 'number'
                     ? formatNumber(fact.value)

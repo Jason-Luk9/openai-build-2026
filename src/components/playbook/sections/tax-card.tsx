@@ -3,7 +3,7 @@ import { Landmark } from 'lucide-react';
 import { AgencyBadge } from '@/components/playbook/agency-badge';
 import { NarrativeBlock, SectionCard } from '@/components/playbook/section-card';
 import { sourcesFromFacts } from '@/components/playbook/source-utils';
-import { SourcesFooter } from '@/components/playbook/sources-footer';
+import { SourceMark, SourcesFooter } from '@/components/playbook/sources-footer';
 import { formatNumber } from '@/lib/format';
 import type { NarrativeSection, TaxIncentivesFacts } from '@/lib/schemas';
 
@@ -17,6 +17,7 @@ export function TaxCard({
   facts: TaxIncentivesFacts;
   narrative?: NarrativeSection;
 }) {
+  const sources = sourcesFromFacts(facts.regulatoryFacts);
   return (
     <SectionCard
       agencies={
@@ -25,9 +26,7 @@ export function TaxCard({
           <AgencyBadge agency="EDB" />
         </>
       }
-      footer={
-        <SourcesFooter sources={sourcesFromFacts(facts.regulatoryFacts)} />
-      }
+      footer={<SourcesFooter sources={sources} />}
       icon={Landmark}
       title="Tax & incentives"
     >
@@ -36,6 +35,7 @@ export function TaxCard({
           <div key={fact.id}>
             <dt className="text-[13px] font-medium text-foreground">
               {fact.label}
+              <SourceMark fact={fact} sources={sources} />
             </dt>
             <dd className="mt-0.5 font-mono text-[13px] leading-5 text-muted-foreground tabular-nums">
               {displayValue(fact.value)}

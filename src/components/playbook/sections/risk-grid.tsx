@@ -99,7 +99,7 @@ export function RiskGrid({
                           </p>
                           <button
                             aria-expanded={expanded === risk.title}
-                            className="mt-1 rounded-sm text-[12px] font-medium text-foreground underline decoration-border underline-offset-2 hover:text-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+                            className="mt-1 cursor-pointer rounded-sm text-[12px] font-medium text-foreground underline decoration-border underline-offset-2 hover:text-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
                             onClick={() =>
                               setExpanded(
                                 expanded === risk.title ? null : risk.title,

@@ -1,3 +1,11 @@
+import { Info } from 'lucide-react';
+
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/components/ui/tooltip';
 import type { VisaCompassFacts } from '@/lib/schemas';
 import { formatNumber } from '@/lib/format';
 
@@ -22,38 +30,49 @@ export function CompassBreakdown({ facts }: { facts: VisaCompassFacts }) {
           {formatNumber(facts.totalScore)} / 80 pts
         </p>
       </div>
-      <div className="space-y-3">
-        {facts.criteria.map((criterion) => {
-          const width = `${(criterion.score / criterion.maximumScore) * 100}%`;
-          const gap = isFail && criterion.score < criterion.maximumScore;
-          return (
-            <div key={criterion.id}>
-              <div className="mb-1 flex items-baseline justify-between gap-3 text-[12.5px]">
-                <span className="font-medium text-muted-foreground">
-                  {criterion.id} · {criterion.label}
-                </span>
-                <span className="shrink-0 font-mono font-semibold text-foreground tabular-nums">
-                  {formatNumber(criterion.score)} /{' '}
-                  {formatNumber(criterion.maximumScore)} pts
-                </span>
-              </div>
-              <div
-                aria-label={`${criterion.label}: ${criterion.score} of ${criterion.maximumScore} points`}
-                className="h-2 overflow-hidden rounded-full bg-muted"
-              >
+      <TooltipProvider>
+        <div className="space-y-3">
+          {facts.criteria.map((criterion) => {
+            const width = `${(criterion.score / criterion.maximumScore) * 100}%`;
+            const gap = isFail && criterion.score < criterion.maximumScore;
+            return (
+              <div key={criterion.id}>
+                <div className="mb-1 flex items-baseline justify-between gap-3 text-[12.5px]">
+                  <span className="inline-flex items-center gap-1 font-medium text-muted-foreground">
+                    {criterion.id} · {criterion.label}
+                    <Tooltip>
+                      <TooltipTrigger
+                        aria-label={`How ${criterion.label} is calculated`}
+                        className="inline-flex cursor-pointer text-muted-foreground/70 hover:text-primary focus-visible:rounded-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+                      >
+                        <Info aria-hidden="true" className="size-3" />
+                      </TooltipTrigger>
+                      <TooltipContent>{criterion.assessment}</TooltipContent>
+                    </Tooltip>
+                  </span>
+                  <span className="shrink-0 font-mono font-semibold text-foreground tabular-nums">
+                    {formatNumber(criterion.score)} /{' '}
+                    {formatNumber(criterion.maximumScore)} pts
+                  </span>
+                </div>
                 <div
-                  className={
-                    gap
-                      ? 'h-full rounded-full bg-warning'
-                      : 'h-full rounded-full bg-primary'
-                  }
-                  style={{ width }}
-                />
+                  aria-label={`${criterion.label}: ${criterion.score} of ${criterion.maximumScore} points`}
+                  className="h-2 overflow-hidden rounded-full bg-muted"
+                >
+                  <div
+                    className={
+                      gap
+                        ? 'h-full rounded-full bg-warning'
+                        : 'h-full rounded-full bg-primary'
+                    }
+                    style={{ width }}
+                  />
+                </div>
               </div>
-            </div>
-          );
-        })}
-      </div>
+            );
+          })}
+        </div>
+      </TooltipProvider>
       <div className="mt-5">
         <div className="relative h-7 border-t border-border">
           <span

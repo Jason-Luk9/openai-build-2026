@@ -51,7 +51,7 @@ export function StepEntityPurpose({
                 value={value}
                 {...register('entityPurpose')}
               />
-              <span className="flex min-h-12 items-center rounded-md border border-border bg-card px-4 text-sm font-medium text-foreground transition-colors peer-checked:border-primary peer-checked:bg-primary/10 peer-checked:text-primary group-focus-within:outline-2 group-focus-within:outline-offset-3 group-focus-within:outline-primary">
+              <span className="flex min-h-14 items-center rounded-md border border-border bg-card px-4 text-sm font-medium text-foreground transition-colors peer-checked:border-primary peer-checked:bg-primary/10 peer-checked:text-primary group-focus-within:outline-2 group-focus-within:outline-offset-3 group-focus-within:outline-primary">
                 {label}
               </span>
             </label>

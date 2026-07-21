@@ -1,25 +1,38 @@
 'use client';
 
 import Link from 'next/link';
+import { Download } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
 
 import { AskSprout } from '@/components/chat/ask-sprout';
 import { PlaybookPdfDownload } from '@/components/pdf/playbook-pdf';
+import { SproutWordmark } from '@/components/layout/sprout-wordmark';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { EntityCard } from '@/components/playbook/sections/entity-card';
+import { VisaPlanner } from '@/components/playbook/sections/visa-planner';
+import { LicenseTable } from '@/components/playbook/sections/license-table';
+import { TaxCard } from '@/components/playbook/sections/tax-card';
+import { BankingCard } from '@/components/playbook/sections/banking-card';
+import { TimelineCard } from '@/components/playbook/sections/timeline-card';
+import { RiskGrid } from '@/components/playbook/sections/risk-grid';
 import { findNarrativeFixture } from '@/lib/fixtures';
-import { formatMoney, formatNumber, formatWeek } from '@/lib/format';
 import { mockProfileIds, type MockProfileId } from '@/lib/mock-profiles';
 import {
   NarrativeSectionSchema,
   NarrativesSchema,
   type PlaybookFacts,
-  type Profile,
-  type NarrativeSection,
   type Narratives,
 } from '@/lib/schemas';
 import { buildPlaybookFacts } from '@/lib/rules';
+import {
+  countSectionStatuses,
+  getSectionStatus,
+  type SectionKey,
+} from '@/lib/playbook-status';
 import { useProfileStore } from '@/store/use-profile-store';
 
-const sectionLabels = {
+const sectionLabels: Record<SectionKey, string> = {
   entity: 'Entity',
   visaCompass: 'Visa and COMPASS',
   licenses: 'Licences',
@@ -27,9 +40,17 @@ const sectionLabels = {
   banking: 'Banking',
   timeline: 'Timeline',
   riskMatrix: 'Risk matrix',
-} as const;
+};
+
+const sectionKeys = Object.keys(sectionLabels) as SectionKey[];
 
 type NarrativeSource = 'loading' | 'live' | 'demo' | 'cached-demo';
+
+function isCompleteNarratives(
+  narratives: Partial<Narratives>,
+): narratives is Narratives {
+  return sectionKeys.every((key) => Boolean(narratives[key]));
+}
 
 export default function PlaybookPage() {
   const profile = useProfileStore((state) => state.profile);
@@ -46,6 +67,7 @@ export default function PlaybookPage() {
   );
   const [narratives, setNarratives] = useState<Partial<Narratives>>({});
   const [source, setSource] = useState<NarrativeSource>('loading');
+  const [activeSection, setActiveSection] = useState<SectionKey>('entity');
 
   useEffect(() => {
     if (profile) return;
@@ -129,13 +151,13 @@ export default function PlaybookPage() {
 
   if (!profile || !facts) {
     return (
-      <main className="mx-auto flex min-h-screen w-full max-w-5xl items-center px-6">
+      <main className="mx-auto flex min-h-screen w-full max-w-5xl items-center bg-background px-6">
         <div>
-          <h1 className="text-3xl font-semibold text-zinc-950">
+          <h1 className="font-serif text-3xl font-semibold text-foreground">
             No profile loaded yet.
           </h1>
           <Link
-            className="mt-6 inline-flex text-sm font-semibold text-teal-700 underline"
+            className="mt-6 inline-flex text-sm font-semibold text-primary underline"
             href="/"
           >
             Back to Sprout
@@ -149,206 +171,176 @@ export default function PlaybookPage() {
     ? findNarrativeFixture(profile)
     : narratives;
   const displayedSource = demoMode ? 'demo' : source;
+  const narrativesReady = isCompleteNarratives(displayedNarratives);
+
+  const statusCounts = countSectionStatuses(facts);
+  const activeNarrative = displayedNarratives[activeSection];
+  let activeSectionContent: React.ReactNode;
+  switch (activeSection) {
+    case 'entity':
+      activeSectionContent = (
+        <EntityCard facts={facts.entity} narrative={activeNarrative} />
+      );
+      break;
+    case 'visaCompass':
+      activeSectionContent = (
+        <VisaPlanner facts={facts.visaCompass} narrative={activeNarrative} />
+      );
+      break;
+    case 'licenses':
+      activeSectionContent = (
+        <LicenseTable facts={facts.licenses} narrative={activeNarrative} />
+      );
+      break;
+    case 'taxIncentives':
+      activeSectionContent = (
+        <TaxCard facts={facts.taxIncentives} narrative={activeNarrative} />
+      );
+      break;
+    case 'banking':
+      activeSectionContent = (
+        <BankingCard facts={facts.banking} narrative={activeNarrative} />
+      );
+      break;
+    case 'timeline':
+      activeSectionContent = (
+        <TimelineCard
+          facts={facts.timeline}
+          factCatalog={allRegulatoryFacts(facts)}
+          narrative={activeNarrative}
+        />
+      );
+      break;
+    case 'riskMatrix':
+      activeSectionContent = (
+        <RiskGrid
+          facts={facts.riskMatrix}
+          factCatalog={allRegulatoryFacts(facts)}
+          narrative={activeNarrative}
+        />
+      );
+      break;
+  }
 
   return (
-    <main className="mx-auto min-h-screen w-full max-w-5xl bg-zinc-50 px-6 py-10 text-zinc-950">
-      {displayedSource === 'cached-demo' ? (
-        <div className="mb-5 rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900">
-          Using cached demo narrative while live generation is unavailable.
-        </div>
-      ) : null}
-      {displayedSource === 'demo' ? (
-        <div className="mb-5 rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900">
-          Demo mode: showing the bundled narrative fixture.
-        </div>
-      ) : null}
-      <p className="text-xs font-medium tracking-[0.08em] text-teal-700 uppercase">
-        Your playbook
-      </p>
-      <h1 className="mt-2 text-3xl font-semibold tracking-tight">
-        Facts first. Guidance as it arrives.
-      </h1>
-      <p className="mt-3 max-w-2xl text-sm leading-6 text-zinc-700">
-        Every fact below comes from the rules engine. Narratives are constrained
-        to these facts and may flag uncertainty.
-      </p>
-      <div className="mt-5">
-        <PlaybookPdfDownload facts={facts} profile={profile} />
-      </div>
-      <div className="mt-8 grid gap-4">
-        {(Object.keys(sectionLabels) as Array<keyof typeof sectionLabels>).map(
-          (key) => (
-            <section
-              className="rounded-xl border border-zinc-200 bg-white p-5 shadow-sm"
-              key={key}
+    <main className="min-h-screen bg-background">
+      <header className="border-b border-border bg-card">
+        <div className="mx-auto flex w-full max-w-5xl items-center justify-between px-6 py-5 lg:px-8">
+          <SproutWordmark />
+          <nav aria-label="Primary" className="flex items-center gap-5">
+            <Link
+              className="text-[13px] font-medium text-muted-foreground hover:text-primary"
+              href="/#mock-profiles"
             >
-              <div className="flex items-center justify-between gap-3">
-                <h2 className="text-lg font-semibold">{sectionLabels[key]}</h2>
+              Mock profiles
+            </Link>
+            <Link
+              className="text-[13px] font-medium text-primary hover:text-primary/80"
+              href="/"
+            >
+              Back to Sprout
+            </Link>
+          </nav>
+        </div>
+      </header>
+      <div className="mx-auto w-full max-w-5xl px-6 py-10">
+        {displayedSource === 'cached-demo' ? (
+          <div className="mb-5 rounded-lg border border-warning/30 bg-warning-tint px-4 py-3 text-sm text-warning">
+            Using cached demo narrative while live generation is unavailable.
+          </div>
+        ) : null}
+        {displayedSource === 'demo' ? (
+          <div className="mb-5 rounded-lg border border-warning/30 bg-warning-tint px-4 py-3 text-sm text-warning">
+            Demo mode: showing the bundled narrative fixture.
+          </div>
+        ) : null}
+        <p className="font-mono text-xs font-medium tracking-[0.08em] text-primary uppercase">
+          Your playbook — {profile.homeCountry} · {profile.industry} ·{' '}
+          {profile.entityPurpose}
+        </p>
+        <h1 className="mt-2 font-serif text-3xl font-semibold tracking-[-0.01em] text-foreground">
+          Facts first. Guidance as it arrives.
+        </h1>
+        <p className="mt-3 max-w-2xl text-sm leading-6 text-foreground">
+          Every fact below comes from the rules engine. Narratives are
+          constrained to these facts and may flag uncertainty.
+        </p>
+        <div className="mt-5 flex flex-wrap items-center gap-2">
+          <Badge className="border-success/30 bg-success-tint font-mono text-success" variant="outline">
+            ✓ {statusCounts.eligible} eligible
+          </Badge>
+          <Badge className="border-warning/30 bg-warning-tint font-mono text-warning" variant="outline">
+            ⚠ {statusCounts.toReview} to review
+          </Badge>
+          {narrativesReady ? (
+            <PlaybookPdfDownload
+              facts={facts}
+              narratives={displayedNarratives}
+              profile={profile}
+            />
+          ) : (
+            <Button
+              aria-label="Preparing guidance for all sections before the PDF can be downloaded"
+              className="h-10 bg-foreground px-4 text-background"
+              disabled
+            >
+              <Download aria-hidden="true" />
+              Preparing guidance...
+            </Button>
+          )}
+        </div>
+        <div className="mt-6 flex flex-wrap gap-2">
+          {sectionKeys.map((key) => {
+            const status = getSectionStatus(key, facts);
+            const active = key === activeSection;
+            return (
+              <button
+                className={
+                  active
+                    ? 'inline-flex cursor-pointer items-center gap-1.5 rounded-full bg-foreground px-3 py-1.5 text-[13px] font-medium text-background'
+                    : 'inline-flex cursor-pointer items-center gap-1.5 rounded-full border border-border bg-card px-3 py-1.5 text-[13px] font-medium text-foreground hover:border-foreground/30'
+                }
+                key={key}
+                onClick={() => setActiveSection(key)}
+                type="button"
+              >
                 <span
+                  aria-hidden="true"
                   className={
-                    displayedSource === 'loading'
-                      ? 'text-xs font-semibold text-teal-700'
-                      : 'text-xs text-zinc-500'
+                    status === 'eligible'
+                      ? 'size-1.5 rounded-full bg-success'
+                      : status === 'not-applicable'
+                        ? 'size-1.5 rounded-full bg-muted-foreground'
+                        : 'size-1.5 rounded-full bg-warning'
                   }
-                >
-                  {displayedNarratives[key]
-                    ? displayedSource === 'loading'
-                      ? 'Streaming'
-                      : 'Narrative ready'
-                    : displayedSource === 'loading'
-                      ? 'Generating...'
-                      : 'Narrative pending'}
-                </span>
-              </div>
-              <FactSummary facts={facts} profile={profile} section={key} />
-              <NarrativeBody narrative={displayedNarratives[key]} />
-            </section>
-          ),
-        )}
+                />
+                {sectionLabels[key]}
+              </button>
+            );
+          })}
+        </div>
+        <div className="mt-6">
+          {activeSectionContent}
+        </div>
+        <Link
+          className="mt-8 inline-flex text-sm font-semibold text-primary underline"
+          href="/"
+        >
+          Back to Sprout
+        </Link>
       </div>
-      <Link
-        className="mt-8 inline-flex text-sm font-semibold text-teal-700 underline"
-        href="/"
-      >
-        Back to Sprout
-      </Link>
       <AskSprout profile={profile} />
     </main>
   );
 }
 
-function FactSummary({
-  facts,
-  profile,
-  section,
-}: {
-  facts: PlaybookFacts;
-  profile: Profile;
-  section: keyof typeof sectionLabels;
-}) {
-  const lines = getFactLines(facts, profile, section);
-
-  return (
-    <div className="mt-4 rounded-lg border border-zinc-200 bg-zinc-50 px-4 py-3">
-      <p className="text-xs font-semibold tracking-[0.08em] text-zinc-500 uppercase">
-        Facts
-      </p>
-      <ul className="mt-2 space-y-1 text-sm leading-5 text-zinc-700">
-        {lines.map((line) => (
-          <li key={line}>{line}</li>
-        ))}
-      </ul>
-    </div>
-  );
-}
-
-function getFactLines(
-  facts: PlaybookFacts,
-  profile: Profile,
-  section: keyof typeof sectionLabels,
-): string[] {
-  switch (section) {
-    case 'entity':
-      return [
-        `Industry: ${profile.industry}; purpose: ${profile.entityPurpose}.`,
-        `Relocating founders/staff: ${formatNumber(profile.foundersRelocating)} / ${formatNumber(profile.staffRelocating)}.`,
-        facts.entity.recommendation.summary,
-        ...facts.entity.regulatoryFacts
-          .slice(0, 2)
-          .map((fact) => `${fact.label}: ${String(fact.value)}`),
-      ];
-    case 'visaCompass':
-      return [
-        `Relocating team: ${formatNumber(profile.foundersRelocating + profile.staffRelocating)} people.`,
-        `COMPASS score: ${formatNumber(facts.visaCompass.totalScore)} / ${formatNumber(facts.visaCompass.passThreshold)} points to pass.`,
-        `Small-firm rule: ${facts.visaCompass.isSmallFirm ? 'applies' : 'does not apply'}.`,
-        ...facts.visaCompass.criteria.map(
-          (criterion) =>
-            `${criterion.id}: ${formatNumber(criterion.score)} / ${formatNumber(criterion.maximumScore)} points.`,
-        ),
-      ];
-    case 'licenses':
-      return facts.licenses.items.map((item) => {
-        const fact = item.regulatoryFacts[0];
-        return `${item.name}: ${item.status}${fact ? ` — ${String(fact.value)}` : ''}.`;
-      });
-    case 'taxIncentives':
-      return [
-        `Projected Singapore revenue: ${formatMoney(profile.projectedSingaporeRevenue)}.`,
-        ...facts.taxIncentives.regulatoryFacts.map(
-          (fact) => `${fact.label}: ${String(fact.value)}`,
-        ),
-      ];
-    case 'banking':
-      return facts.banking.requirements.map(
-        (fact) => `${fact.label}: ${String(fact.value)}`,
-      );
-    case 'timeline':
-      return facts.timeline.steps.map(
-        (step) => `${formatWeek(step.week)}: ${step.action}`,
-      );
-    case 'riskMatrix':
-      return facts.riskMatrix.risks.map(
-        (risk) =>
-          `${risk.title}: ${risk.likelihood} likelihood / ${risk.impact} impact.`,
-      );
-  }
-}
-
-function NarrativeBody({
-  narrative,
-}: {
-  narrative: NarrativeSection | undefined;
-}) {
-  if (!narrative) {
-    return (
-      <div
-        aria-label="AI narrative is being generated"
-        aria-live="polite"
-        className="mt-4 rounded-lg border-2 border-teal-200 bg-teal-50 p-4 text-teal-950"
-        role="status"
-      >
-        <div className="flex items-center gap-2">
-          <span
-            aria-hidden="true"
-            className="size-2.5 animate-pulse rounded-full bg-teal-700 motion-reduce:animate-none"
-          />
-          <p className="text-sm font-semibold">
-            Generating grounded guidance...
-          </p>
-        </div>
-        <div aria-hidden="true" className="mt-3 space-y-2">
-          <div className="h-2.5 w-full animate-pulse rounded-full bg-teal-200 motion-reduce:animate-none" />
-          <div className="h-2.5 w-10/12 animate-pulse rounded-full bg-teal-200 motion-reduce:animate-none" />
-          <div className="h-2.5 w-7/12 animate-pulse rounded-full bg-teal-200 motion-reduce:animate-none" />
-        </div>
-        <p className="mt-3 text-xs text-teal-800">
-          Your facts are ready. The AI explanation will appear here as it
-          streams in.
-        </p>
-      </div>
-    );
-  }
-  return (
-    <div className="mt-4 space-y-3 text-sm leading-6 text-zinc-700">
-      <p>{narrative.summary}</p>
-      {narrative.callout ? (
-        <p className="rounded-md border-l-2 border-teal-700 bg-teal-50 px-3 py-2">
-          {narrative.callout}
-        </p>
-      ) : null}
-      {narrative.nextSteps.length ? (
-        <ul className="list-disc space-y-1 pl-5">
-          {narrative.nextSteps.map((step) => (
-            <li key={step}>{step}</li>
-          ))}
-        </ul>
-      ) : null}
-      {narrative.uncertaintyFlags.length ? (
-        <p className="text-xs text-amber-700">
-          Uncertainty: {narrative.uncertaintyFlags.join(' ')}
-        </p>
-      ) : null}
-    </div>
-  );
+function allRegulatoryFacts(facts: PlaybookFacts) {
+  return [
+    ...facts.entity.regulatoryFacts,
+    ...facts.visaCompass.regulatoryFacts,
+    ...facts.visaCompass.criteria.flatMap((criterion) => criterion.regulatoryFacts),
+    ...facts.licenses.items.flatMap((item) => item.regulatoryFacts),
+    ...facts.taxIncentives.regulatoryFacts,
+    ...facts.banking.requirements,
+  ];
 }

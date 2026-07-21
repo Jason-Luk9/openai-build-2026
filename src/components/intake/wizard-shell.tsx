@@ -128,7 +128,7 @@ export function WizardShell() {
               {submitError}
             </p>
           ) : null}
-          <div className="mt-8 overflow-hidden">
+          <div className="mt-8 -mx-2 overflow-hidden px-2">
             <AnimatePresence custom={direction} initial={false} mode="wait">
               <motion.div
                 animate="animate"

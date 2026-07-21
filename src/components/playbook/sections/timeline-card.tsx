@@ -37,7 +37,7 @@ export function TimelineCard({
       icon={ListChecks}
       title="Timeline"
     >
-      <ol className="relative space-y-0 before:absolute before:top-2 before:bottom-2 before:left-[4.75rem] before:w-px before:bg-border">
+      <ol className="relative space-y-0 before:absolute before:top-2 before:bottom-2 before:left-[4.25rem] before:w-px before:bg-border">
         {steps.map((step) => (
           <li
             className="relative grid grid-cols-[3.75rem_1fr] gap-4 py-3 first:pt-0 last:pb-0"
