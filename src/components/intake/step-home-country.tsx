@@ -40,13 +40,13 @@ export function StepHomeCountry({ draft, onValid }: StepHomeCountryProps) {
   return (
     <form noValidate onSubmit={handleSubmit(onValid)}>
       <fieldset>
-        <legend className="text-[20px] font-semibold tracking-[-0.025em] text-zinc-950">
+        <legend className="font-serif text-[22px] font-semibold tracking-[-0.01em] text-foreground">
           Where is your business based today?
         </legend>
-        <p className="mt-2 text-[14.5px] leading-6 text-zinc-700">
+        <p className="mt-2 text-[14.5px] leading-6 text-foreground">
           Choose your ASEAN home country.
         </p>
-        <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-3">
+        <div className="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-3">
           {countries.map(([value, label]) => (
             <label className="group relative cursor-pointer" key={value}>
               <input
@@ -55,21 +55,21 @@ export function StepHomeCountry({ draft, onValid }: StepHomeCountryProps) {
                 value={value}
                 {...register('homeCountry')}
               />
-              <span className="flex min-h-12 items-center rounded-lg border border-zinc-200 bg-white px-3 text-sm font-medium text-zinc-700 transition-colors peer-checked:border-teal-700 peer-checked:bg-teal-50 peer-checked:text-teal-800 group-focus-within:outline-2 group-focus-within:outline-offset-3 group-focus-within:outline-teal-700">
+              <span className="flex min-h-14 items-center rounded-md border border-border bg-card px-4 text-sm font-medium text-foreground transition-colors peer-checked:border-primary peer-checked:bg-primary/10 peer-checked:text-primary group-focus-within:outline-2 group-focus-within:outline-offset-3 group-focus-within:outline-primary">
                 {label}
               </span>
             </label>
           ))}
         </div>
         {errors.homeCountry && (
-          <p className="mt-3 text-[12.5px] text-red-600" role="alert">
+          <p className="mt-3 text-[12.5px] text-destructive" role="alert">
             {errors.homeCountry.message}
           </p>
         )}
       </fieldset>
       <div className="mt-8 flex justify-end">
         <Button
-          className="h-10 bg-teal-700 px-4 text-white hover:bg-teal-800"
+          className="h-10 bg-foreground px-4 text-background hover:bg-foreground/90"
           type="submit"
         >
           Continue

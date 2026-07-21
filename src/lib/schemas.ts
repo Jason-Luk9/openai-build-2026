@@ -267,7 +267,7 @@ export const PlaybookFactsSchema = z
 export const NarrativeSectionSchema = z
   .object({
     summary: nonEmptyText('a narrative summary').max(1_200),
-    callout: z.string().trim().min(1).max(300).optional(),
+    callout: z.string().trim().min(1).max(300).nullable(),
     nextSteps: z.array(nonEmptyText('a next step').max(240)).max(5),
     uncertaintyFlags: z.array(nonEmptyText('an uncertainty flag').max(240)).max(5),
   })

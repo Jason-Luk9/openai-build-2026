@@ -1,9 +1,11 @@
 'use client';
 
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
+import { SproutWordmark } from '@/components/layout/sprout-wordmark';
 import { Progress } from '@/components/ui/progress';
 import { StepEntityPurpose } from '@/components/intake/step-entity-purpose';
 import { StepEntrePassEvidence } from '@/components/intake/step-entrepass-evidence';
@@ -87,16 +89,27 @@ export function WizardShell() {
   const transition = { duration: 0.22, ease: 'easeOut' as const };
 
   return (
-    <main className="min-h-screen bg-zinc-50 px-6 py-10 sm:py-16">
-      <div className="mx-auto w-full max-w-xl">
-        <p className="text-[12.5px] font-medium tracking-[0.08em] text-teal-700 uppercase">
-          SingaPath intake
+    <main className="min-h-screen bg-background">
+      <header className="border-b border-border bg-card">
+        <div className="mx-auto flex w-full max-w-5xl items-center justify-between px-6 py-5 lg:px-8">
+          <SproutWordmark />
+          <Link
+            className="text-[13px] font-medium text-muted-foreground underline decoration-border underline-offset-4 hover:text-primary"
+            href="/"
+          >
+            Exit to landing
+          </Link>
+        </div>
+      </header>
+      <div className="mx-auto w-full max-w-xl px-6 py-10 sm:py-16">
+        <p className="font-mono text-[12.5px] font-medium tracking-[0.08em] text-primary uppercase">
+          Sprout intake
         </p>
-        <h1 className="mt-3 text-[30px] font-semibold tracking-[-0.04em] text-zinc-950">
+        <h1 className="mt-3 font-serif text-[32px] font-semibold tracking-[-0.02em] text-foreground">
           Build your Singapore entry plan.
         </h1>
-        <div className="mt-8 rounded-xl border border-zinc-200 bg-white p-5 shadow-sm sm:p-7">
-          <div className="flex items-center justify-between text-[12.5px] font-medium text-zinc-500">
+        <div className="mt-8 rounded-xl border border-border bg-card p-5 sm:p-7">
+          <div className="flex items-center justify-between font-mono text-[12.5px] font-medium text-muted-foreground">
             <span>
               Step {step} of {stepCount}
             </span>
@@ -109,13 +122,13 @@ export function WizardShell() {
           />
           {submitError ? (
             <p
-              className="mt-4 rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-[12.5px] text-red-700"
+              className="mt-4 rounded-lg border border-destructive/30 bg-destructive/10 px-3 py-2 text-[12.5px] text-destructive"
               role="alert"
             >
               {submitError}
             </p>
           ) : null}
-          <div className="mt-8 overflow-hidden">
+          <div className="mt-8 -mx-2 overflow-hidden px-2">
             <AnimatePresence custom={direction} initial={false} mode="wait">
               <motion.div
                 animate="animate"
@@ -181,7 +194,7 @@ export function WizardShell() {
             </AnimatePresence>
           </div>
         </div>
-        <p className="mt-5 text-center text-[12.5px] text-zinc-500">
+        <p className="mt-5 text-center text-[12.5px] text-muted-foreground">
           General information, not legal advice.
         </p>
       </div>

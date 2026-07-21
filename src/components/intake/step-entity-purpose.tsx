@@ -36,10 +36,10 @@ export function StepEntityPurpose({
   return (
     <form noValidate onSubmit={handleSubmit(onValid)}>
       <fieldset>
-        <legend className="text-[20px] font-semibold tracking-[-0.025em] text-zinc-950">
+        <legend className="font-serif text-[22px] font-semibold tracking-[-0.01em] text-foreground">
           What will your Singapore entity do?
         </legend>
-        <p className="mt-2 text-[14.5px] leading-6 text-zinc-700">
+        <p className="mt-2 text-[14.5px] leading-6 text-foreground">
           Choose its primary purpose.
         </p>
         <div className="mt-6 grid gap-3">
@@ -51,24 +51,29 @@ export function StepEntityPurpose({
                 value={value}
                 {...register('entityPurpose')}
               />
-              <span className="flex min-h-12 items-center rounded-lg border border-zinc-200 bg-white px-4 text-sm font-medium text-zinc-700 transition-colors peer-checked:border-teal-700 peer-checked:bg-teal-50 peer-checked:text-teal-800 group-focus-within:outline-2 group-focus-within:outline-offset-3 group-focus-within:outline-teal-700">
+              <span className="flex min-h-14 items-center rounded-md border border-border bg-card px-4 text-sm font-medium text-foreground transition-colors peer-checked:border-primary peer-checked:bg-primary/10 peer-checked:text-primary group-focus-within:outline-2 group-focus-within:outline-offset-3 group-focus-within:outline-primary">
                 {label}
               </span>
             </label>
           ))}
         </div>
         {errors.entityPurpose && (
-          <p className="mt-3 text-[12.5px] text-red-600" role="alert">
+          <p className="mt-3 text-[12.5px] text-destructive" role="alert">
             {errors.entityPurpose.message}
           </p>
         )}
       </fieldset>
       <div className="mt-8 flex justify-between">
-        <Button onClick={onBack} type="button" variant="outline">
+        <Button
+          className="border-border bg-card text-foreground hover:bg-muted"
+          onClick={onBack}
+          type="button"
+          variant="outline"
+        >
           Back
         </Button>
         <Button
-          className="h-10 bg-teal-700 px-4 text-white hover:bg-teal-800"
+          className="h-10 bg-foreground px-4 text-background hover:bg-foreground/90"
           type="submit"
         >
           Continue

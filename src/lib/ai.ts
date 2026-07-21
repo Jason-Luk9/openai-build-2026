@@ -4,8 +4,6 @@ import type { LanguageModel } from 'ai';
 
 import type { PlaybookFacts, Profile } from '@/lib/schemas';
 
-const GEMINI_MODEL = 'gemini-3-flash-preview';
-
 export type NarrativeModel = {
   provider: 'google' | 'groq';
   model: LanguageModel;
@@ -14,13 +12,14 @@ export type NarrativeModel = {
 export function getNarrativeModels(): NarrativeModel[] {
   const models: NarrativeModel[] = [];
   const googleKey = process.env.GOOGLE_GENERATIVE_AI_API_KEY;
+  const geminiModel = process.env.GEMINI_MODEL;
   const groqKey = process.env.GROQ_API_KEY;
   const groqModel = process.env.GROQ_MODEL;
 
-  if (googleKey) {
+  if (googleKey && geminiModel) {
     models.push({
       provider: 'google',
-      model: createGoogle({ apiKey: googleKey })(GEMINI_MODEL),
+      model: createGoogle({ apiKey: googleKey })(geminiModel),
     });
   }
 
@@ -56,7 +55,7 @@ ${JSON.stringify(facts)}
 }
 
 export function buildChatSystemPrompt(profile: Profile, facts: PlaybookFacts) {
-  return `You are Ask SingaPath, a grounded assistant for a Singapore market-entry playbook.
+  return `You are Ask Sprout, a grounded assistant for a Singapore market-entry playbook.
 
 The supplied profile and computed facts are authoritative. Use one of the supplied rules-engine tools for every supported what-if. Never invent or estimate a regulatory number, fee, threshold, deadline, licence, tax rule, immigration requirement, or eligibility result.
 

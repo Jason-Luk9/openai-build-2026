@@ -48,7 +48,7 @@ export const useProfileStore = create<ProfileState>()(
         set({ profile: null, draftProfile: {}, mockProfileId: null }),
     }),
     {
-      name: 'singapath-profile',
+      name: 'sprout-profile',
       storage: createJSONStorage(() => sessionStorage),
     },
   ),

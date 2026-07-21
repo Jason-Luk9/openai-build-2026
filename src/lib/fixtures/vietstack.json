@@ -19,6 +19,7 @@
   },
   "licenses": {
     "summary": "SaaS doesn't have a single named licence in the knowledge base \u2014 the government's licence finder needs to be checked against VietStack's exact business activity before operating, since requirements vary by the specific service offered.",
+    "callout": null,
     "nextSteps": [
       "Run VietStack's specific SaaS activity through the GoBusiness licence finder before launch."
     ],
@@ -35,6 +36,7 @@
   },
   "banking": {
     "summary": "As a foreign-owned company, VietStack should expect enhanced due diligence and a longer account-opening review \u2014 DBS requires ACRA incorporation documents, signatory identity/address verification, and board resolutions up front.",
+    "callout": null,
     "nextSteps": [
       "Prepare ACRA documents and signatory ID/address verification before the first bank meeting."
     ],
@@ -42,11 +44,13 @@
   },
   "timeline": {
     "summary": "Roughly a 6-week runway: incorporate in week 1, run the SaaS activity through the licence finder in week 2, open the bank account in week 3 (padded for foreign-owned due diligence), submit the EntrePass and staff Employment Pass applications in week 4, and register for GST in week 6 given projected revenue already exceeds the S$1 million threshold.",
+    "callout": null,
     "nextSteps": [],
     "uncertaintyFlags": ["The sequence and duration are indicative and depend on agency and bank processing."]
   },
   "riskMatrix": {
     "summary": "Three risks stand out: a foreign-owned-company bank account delay (medium/medium); the COMPASS diversity flag that will apply once headcount crosses 25 PMETs, since today's neutral C3/C4 scoring is a small-firm default, not a permanent one (low/medium); and GST registration exposure, since projected revenue already exceeds the S$1 million threshold (medium/medium).",
+    "callout": null,
     "nextSteps": [
       "Register for GST now rather than waiting for the retrospective test to trigger it.",
       "Start planning nationality-mix and local-hiring practices well ahead of the 25-PMET mark."

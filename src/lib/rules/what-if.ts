@@ -76,10 +76,7 @@ function firstMonthlyFloor(fact: RegulatoryFact) {
   return match?.[1] ? Number(match[1].replaceAll(',', '')) : null;
 }
 
-export function checkSalaryWhatIf(
-  profile: Profile,
-  monthlySalary: number,
-): WhatIfResult {
+export function resolveSalaryFloor(profile: Profile) {
   const context =
     profile.industry === 'fintech'
       ? 'financial-services'
@@ -92,8 +89,16 @@ export function checkSalaryWhatIf(
     fact.id.includes('salary-floor'),
   );
   const floor = floorFact ? firstMonthlyFloor(floorFact) : null;
+  return { context, contextFacts, floor };
+}
 
-  if (!floorFact || floor === null) {
+export function checkSalaryWhatIf(
+  profile: Profile,
+  monthlySalary: number,
+): WhatIfResult {
+  const { context, contextFacts, floor } = resolveSalaryFloor(profile);
+
+  if (floor === null) {
     return WhatIfResultSchema.parse({
       kind: 'salary',
       status: 'review-needed',
@@ -172,10 +177,7 @@ export function checkHeadcountWhatIf(
   });
 }
 
-export function checkTaxRevenueWhatIf(
-  profile: Profile,
-  projectedSingaporeRevenue: number,
-): WhatIfResult {
+export function resolveGstThreshold(profile: Profile) {
   const facts = matchTaxIncentives(profile, bundledKnowledge);
   const thresholdFact = facts.regulatoryFacts.find((fact) =>
     fact.id.includes('gst-registration-threshold'),
@@ -186,6 +188,14 @@ export function checkTaxRevenueWhatIf(
   const threshold = match?.[1]
     ? Number(match[1].replaceAll(',', '')) * 1_000_000
     : null;
+  return { facts, thresholdFact, threshold };
+}
+
+export function checkTaxRevenueWhatIf(
+  profile: Profile,
+  projectedSingaporeRevenue: number,
+): WhatIfResult {
+  const { facts, thresholdFact, threshold } = resolveGstThreshold(profile);
 
   if (!thresholdFact || threshold === null) {
     return WhatIfResultSchema.parse({
@@ -215,6 +225,67 @@ export function checkTaxRevenueWhatIf(
     ],
     sources: uniqueSources(facts.regulatoryFacts),
   });
+}
+
+const industryLabels: Partial<Record<Profile['industry'], string>> = {
+  fnb: 'food & beverage',
+  saas: 'B2B SaaS',
+  fintech: 'fintech',
+  retail: 'retail',
+  'medical-devices': 'medical device',
+};
+
+function asNumber(value: RegulatoryFact['value']): number {
+  return typeof value === 'number' ? value : Number(value);
+}
+
+function formatSgdMillions(value: number): string {
+  return value >= 1_000_000
+    ? `${(value / 1_000_000).toLocaleString('en-SG', { maximumFractionDigits: 2 })} million`
+    : value.toLocaleString('en-SG');
+}
+
+export function buildSuggestedQuestions(profile: Profile): string[] {
+  const questions: string[] = [];
+
+  const { floor } = resolveSalaryFloor(profile);
+  questions.push(
+    floor === null
+      ? 'What if we pay the applicant S$7,000 per month?'
+      : `What if we pay the applicant S$${floor.toLocaleString('en-SG')} per month?`,
+  );
+
+  const smallFirmThreshold = asNumber(
+    bundledKnowledge.compass.smallFirmPmetThreshold.value,
+  );
+  const currentTotalPmet = profile.foundersRelocating + profile.staffRelocating;
+  const localPmetGuess = Math.round(smallFirmThreshold * 0.4);
+  questions.push(
+    `What changes if we grow from ${currentTotalPmet} to ${smallFirmThreshold} PMETs with ${localPmetGuess} local PMETs?`,
+  );
+
+  const { threshold } = resolveGstThreshold(profile);
+  const currentRevenue = profile.projectedSingaporeRevenue;
+  const revenueTarget =
+    threshold === null
+      ? null
+      : currentRevenue < threshold
+        ? threshold
+        : Math.round((currentRevenue * 1.5) / 100_000) * 100_000;
+  questions.push(
+    revenueTarget === null
+      ? 'What if projected Singapore revenue reaches S$1.2 million?'
+      : `What if projected Singapore revenue grows from S$${formatSgdMillions(currentRevenue)} to S$${formatSgdMillions(revenueTarget)}?`,
+  );
+
+  const industryLabel = industryLabels[profile.industry];
+  questions.push(
+    industryLabel
+      ? `Which licences are flagged for ${industryLabel} businesses?`
+      : 'Which licences are flagged for this industry?',
+  );
+
+  return questions;
 }
 
 export function lookupProfileLicenses(profile: Profile): WhatIfResult {
