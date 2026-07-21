@@ -12,13 +12,13 @@ type SourcesFooterProps = {
 
 export function SourcesFooter({ sources }: SourcesFooterProps) {
   return (
-    <footer className="border-t border-zinc-100 px-5 py-3 text-[12.5px] leading-5 text-zinc-500">
+    <footer className="border-t border-border px-5 py-3 font-mono text-[12.5px] leading-5 text-muted-foreground">
       <span>Sources: </span>
       {sources.map((source, index) => (
         <span key={source.url}>
           {index > 0 ? ' · ' : null}
           <a
-            className="inline-flex items-center gap-0.5 underline decoration-zinc-300 underline-offset-2 transition-colors hover:text-teal-700 focus-visible:rounded-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-700"
+            className="inline-flex items-center gap-0.5 underline decoration-border underline-offset-2 transition-colors hover:text-primary focus-visible:rounded-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
             href={source.url}
             rel="noreferrer"
             target="_blank"

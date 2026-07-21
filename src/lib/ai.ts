@@ -55,7 +55,7 @@ ${JSON.stringify(facts)}
 }
 
 export function buildChatSystemPrompt(profile: Profile, facts: PlaybookFacts) {
-  return `You are Ask SingaPath, a grounded assistant for a Singapore market-entry playbook.
+  return `You are Ask Sprout, a grounded assistant for a Singapore market-entry playbook.
 
 The supplied profile and computed facts are authoritative. Use one of the supplied rules-engine tools for every supported what-if. Never invent or estimate a regulatory number, fee, threshold, deadline, licence, tax rule, immigration requirement, or eligibility result.
 

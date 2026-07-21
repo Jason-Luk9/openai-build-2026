@@ -8,22 +8,22 @@ const statusConfig = {
   eligible: {
     icon: Check,
     label: 'Eligible',
-    className: 'border-emerald-200 bg-emerald-50 text-emerald-700',
+    className: 'border-success/30 bg-success-tint text-success',
   },
   flag: {
     icon: TriangleAlert,
-    label: 'Flag',
-    className: 'border-amber-200 bg-amber-50 text-amber-700',
+    label: 'To review',
+    className: 'border-warning/30 bg-warning-tint text-warning',
   },
   blocker: {
     icon: X,
     label: 'Blocker',
-    className: 'border-red-200 bg-red-50 text-red-700',
+    className: 'border-destructive/30 bg-destructive/10 text-destructive',
   },
   'not-applicable': {
     icon: CircleMinus,
     label: 'N/A',
-    className: 'border-zinc-200 bg-zinc-50 text-zinc-500',
+    className: 'border-border bg-muted text-muted-foreground',
   },
 } as const;
 
@@ -39,7 +39,7 @@ export function StatusChip({ status, className }: StatusChipProps) {
   return (
     <span
       className={cn(
-        'inline-flex items-center gap-1 rounded-full border px-2 py-1 text-xs font-medium',
+        'inline-flex items-center gap-1 rounded-md border px-2 py-1 font-mono text-xs font-medium',
         config.className,
         className,
       )}

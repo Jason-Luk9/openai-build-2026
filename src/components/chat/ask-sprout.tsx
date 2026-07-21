@@ -94,7 +94,7 @@ function MessageParts({ message }: { message: UIMessage }) {
   );
 }
 
-export function AskSingapath({ profile }: { profile: Profile }) {
+export function AskSprout({ profile }: { profile: Profile }) {
   const transport = useMemo(
     () => new DefaultChatTransport({ api: '/api/chat', body: { profile } }),
     [profile],
@@ -128,9 +128,9 @@ export function AskSingapath({ profile }: { profile: Profile }) {
     return (
       <div className="fixed right-5 bottom-5 z-50">
         <Button
-          aria-controls="ask-singapath-dialog"
+          aria-controls="ask-sprout-dialog"
           aria-expanded={false}
-          aria-label="Open Ask SingaPath chat"
+          aria-label="Open Ask Sprout chat"
           className="size-14 rounded-full bg-teal-700 text-white shadow-lg shadow-teal-950/20 hover:bg-teal-800 focus-visible:ring-teal-700/40"
           onClick={() => setOpen(true)}
           size="icon-lg"
@@ -150,9 +150,9 @@ export function AskSingapath({ profile }: { profile: Profile }) {
   }
   return (
     <section
-      aria-labelledby="ask-singapath-title"
+      aria-labelledby="ask-sprout-title"
       className="fixed right-4 bottom-4 z-50 flex max-h-[calc(100vh-2rem)] w-[calc(100vw-2rem)] max-w-md flex-col overflow-hidden rounded-xl border border-teal-200 bg-white shadow-2xl shadow-zinc-950/20"
-      id="ask-singapath-dialog"
+      id="ask-sprout-dialog"
       role="dialog"
     >
       <div className="flex shrink-0 items-start justify-between gap-4 border-b border-teal-100 bg-teal-50 p-4">
@@ -160,12 +160,12 @@ export function AskSingapath({ profile }: { profile: Profile }) {
           <div className="flex items-center gap-2 text-teal-700">
             <Sparkles aria-hidden="true" className="size-4" />
             <p className="text-xs font-semibold tracking-[0.08em] uppercase">
-              Ask SingaPath
+              Ask Sprout
             </p>
           </div>
           <h2
             className="mt-2 text-lg font-semibold text-zinc-950"
-            id="ask-singapath-title"
+            id="ask-sprout-title"
           >
             Explore a grounded what-if
           </h2>
@@ -188,8 +188,8 @@ export function AskSingapath({ profile }: { profile: Profile }) {
             </Button>
           ) : null}
           <Button
-            aria-label="Close Ask SingaPath chat"
-            aria-controls="ask-singapath-dialog"
+            aria-label="Close Ask Sprout chat"
+            aria-controls="ask-sprout-dialog"
             onClick={() => setOpen(false)}
             size="icon"
           >

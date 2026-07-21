@@ -74,10 +74,10 @@ export function StepEntrePassEvidence({
   return (
     <form noValidate onSubmit={handleSubmit(onValid)}>
       <fieldset>
-        <legend className="text-[20px] font-semibold tracking-[-0.025em] text-zinc-950">
+        <legend className="font-serif text-[22px] font-semibold tracking-[-0.01em] text-foreground">
           What supports your EntrePass eligibility?
         </legend>
-        <p className="mt-2 text-[14.5px] leading-6 text-zinc-700">
+        <p className="mt-2 text-[14.5px] leading-6 text-foreground">
           Answer each question. Details are optional, but help you review your
           evidence later.
         </p>
@@ -90,13 +90,13 @@ export function StepEntrePassEvidence({
               errors.entrePassEvidence?.[item.detailKey]?.message;
             return (
               <div
-                className="rounded-xl border border-zinc-200 bg-white p-4"
+                className="rounded-xl border border-border bg-card p-4"
                 key={item.booleanKey}
               >
-                <p className="text-sm font-semibold text-zinc-900">
+                <p className="text-sm font-semibold text-foreground">
                   {item.title}
                 </p>
-                <p className="mt-1 text-sm text-zinc-700">{item.question}</p>
+                <p className="mt-1 text-sm text-foreground">{item.question}</p>
                 <div
                   className="mt-3 flex gap-3"
                   role="radiogroup"
@@ -117,7 +117,7 @@ export function StepEntrePassEvidence({
                             ref={field.ref}
                             type="radio"
                           />
-                          <span className="inline-flex rounded-md border border-zinc-200 px-3 py-1.5 text-sm font-medium text-zinc-700 peer-checked:border-teal-700 peer-checked:bg-teal-50 peer-checked:text-teal-800 focus-within:outline-2 focus-within:outline-offset-3 focus-within:outline-teal-700">
+                          <span className="inline-flex rounded-md border border-border px-3 py-1.5 text-sm font-medium text-foreground peer-checked:border-primary peer-checked:bg-primary/10 peer-checked:text-primary focus-within:outline-2 focus-within:outline-offset-3 focus-within:outline-primary">
                             Yes
                           </span>
                         </label>
@@ -138,7 +138,7 @@ export function StepEntrePassEvidence({
                             }}
                             type="radio"
                           />
-                          <span className="inline-flex rounded-md border border-zinc-200 px-3 py-1.5 text-sm font-medium text-zinc-700 peer-checked:border-teal-700 peer-checked:bg-teal-50 peer-checked:text-teal-800 focus-within:outline-2 focus-within:outline-offset-3 focus-within:outline-teal-700">
+                          <span className="inline-flex rounded-md border border-border px-3 py-1.5 text-sm font-medium text-foreground peer-checked:border-primary peer-checked:bg-primary/10 peer-checked:text-primary focus-within:outline-2 focus-within:outline-offset-3 focus-within:outline-primary">
                             No
                           </span>
                         </label>
@@ -147,16 +147,16 @@ export function StepEntrePassEvidence({
                   />
                 </div>
                 {choiceError && (
-                  <p className="mt-2 text-[12.5px] text-red-600" role="alert">
+                  <p className="mt-2 text-[12.5px] text-destructive" role="alert">
                     {choiceError}
                   </p>
                 )}
                 {isYes && (
-                  <label className="mt-4 block text-sm font-medium text-zinc-800">
+                  <label className="mt-4 block text-sm font-medium text-foreground">
                     Supporting details
                     <textarea
                       aria-invalid={Boolean(detailError)}
-                      className="mt-2 min-h-24 w-full rounded-lg border border-zinc-300 bg-white px-3 py-2 text-sm outline-none focus-visible:border-teal-700 focus-visible:ring-3 focus-visible:ring-teal-700/25"
+                      className="mt-2 min-h-24 w-full rounded-lg border border-border bg-card px-3 py-2 text-sm outline-none focus-visible:border-primary focus-visible:ring-3 focus-visible:ring-primary/25"
                       maxLength={500}
                       {...register(`entrePassEvidence.${item.detailKey}`, {
                         setValueAs: (value) =>
@@ -165,13 +165,13 @@ export function StepEntrePassEvidence({
                             : value,
                       })}
                     />
-                    <span className="mt-1.5 block text-[12.5px] font-normal text-zinc-500">
+                    <span className="mt-1.5 block font-mono text-[12.5px] font-normal text-muted-foreground">
                       Do not include links or file references.
                     </span>
                   </label>
                 )}
                 {detailError && (
-                  <p className="mt-2 text-[12.5px] text-red-600" role="alert">
+                  <p className="mt-2 text-[12.5px] text-destructive" role="alert">
                     {detailError}
                   </p>
                 )}
@@ -181,11 +181,16 @@ export function StepEntrePassEvidence({
         </div>
       </fieldset>
       <div className="mt-8 flex justify-between">
-        <Button onClick={onBack} type="button" variant="outline">
+        <Button
+          className="border-border bg-card text-foreground hover:bg-muted"
+          onClick={onBack}
+          type="button"
+          variant="outline"
+        >
           Back
         </Button>
         <Button
-          className="h-10 bg-teal-700 px-4 text-white hover:bg-teal-800"
+          className="h-10 bg-foreground px-4 text-background hover:bg-foreground/90"
           type="submit"
         >
           Generate playbook

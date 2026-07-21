@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { useEffect, useMemo, useState } from 'react';
 
-import { AskSingapath } from '@/components/chat/ask-singapath';
+import { AskSprout } from '@/components/chat/ask-sprout';
 import { PlaybookPdfDownload } from '@/components/pdf/playbook-pdf';
 import { findNarrativeFixture } from '@/lib/fixtures';
 import { formatMoney, formatNumber, formatWeek } from '@/lib/format';
@@ -138,7 +138,7 @@ export default function PlaybookPage() {
             className="mt-6 inline-flex text-sm font-semibold text-teal-700 underline"
             href="/"
           >
-            Back to SingaPath
+            Back to Sprout
           </Link>
         </div>
       </main>
@@ -210,9 +210,9 @@ export default function PlaybookPage() {
         className="mt-8 inline-flex text-sm font-semibold text-teal-700 underline"
         href="/"
       >
-        Back to SingaPath
+        Back to Sprout
       </Link>
-      <AskSingapath profile={profile} />
+      <AskSprout profile={profile} />
     </main>
   );
 }

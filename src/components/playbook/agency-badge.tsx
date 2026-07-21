@@ -30,7 +30,7 @@ export function AgencyBadge({ agency }: AgencyBadgeProps) {
         <TooltipTrigger>
           <Badge
             variant="outline"
-            className="border-zinc-200 bg-white font-semibold tracking-[0.04em] text-zinc-600"
+            className="border-border bg-card font-mono font-semibold tracking-[0.04em] text-muted-foreground"
           >
             {agency}
           </Badge>

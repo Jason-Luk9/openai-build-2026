@@ -1,14 +1,14 @@
-# SingaPath — Implementation Plan
+# Sprout — Implementation Plan
 
 ## Context
 
-SingaPath turns an ASEAN founder's 5-minute company profile into a complete Singapore market-entry playbook: entity structure, founder/staff visas (with COMPASS scoring), industry licensing, tax incentives, banking roadmap, and a week-by-week timeline with costs. The canonical profile captures seven data points across five wizard steps: home country, industry, entity purpose, founders relocating, staff relocating, projected Singapore revenue, and EntrePass evidence (VC backing, IP, or awards). This document turns the product spec and stack doc into an executable architecture with design and code conventions for the whole team.
+Sprout turns an ASEAN founder's 5-minute company profile into a complete Singapore market-entry playbook: entity structure, founder/staff visas (with COMPASS scoring), industry licensing, tax incentives, banking roadmap, and a week-by-week timeline with costs. The canonical profile captures seven data points across five wizard steps: home country, industry, entity purpose, founders relocating, staff relocating, projected Singapore revenue, and EntrePass evidence (VC backing, IP, or awards). This document turns the product spec and stack doc into an executable architecture with design and code conventions for the whole team.
 
 Build starts from an empty repository (Node 20+ required for Next.js 15). Three decisions are locked:
 
 - **AI provider: Gemini 3 Flash Preview via Google AI Studio** (`@ai-sdk/google`), with an optional Groq fallback. The Vercel AI SDK keeps the app provider-agnostic — all model naming lives in one config file, so switching providers later (e.g. to OpenAI) is a one-line change plus an env var.
 - **Timeline: 2–3 days of build** — all 6 outputs plus a risk matrix, 3 polished mock profiles, COMPASS chart, PDF export.
-- **"Ask SingaPath" chat: stretch goal** — built last, cut first if behind.
+- **"Ask Sprout" chat: stretch goal** — built last, cut first if behind.
 
 ---
 
