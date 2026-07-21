@@ -4,16 +4,11 @@ import { DefaultChatTransport, type UIMessage } from 'ai';
 import { MessageCircle, Send, Sparkles, X } from 'lucide-react';
 import { FormEvent, useMemo, useState } from 'react';
 import { useChat } from '@ai-sdk/react';
+import { Streamdown } from 'streamdown';
 
 import { Button } from '@/components/ui/button';
+import { buildSuggestedQuestions } from '@/lib/rules';
 import type { Profile } from '@/lib/schemas';
-
-const suggestedQuestions = [
-  'What if we pay the applicant S$7,000 per month?',
-  'What changes if we grow to 25 PMETs with 10 local PMETs?',
-  'What if projected Singapore revenue reaches S$1.2 million?',
-  'Which licences are flagged for this industry?',
-];
 
 type ToolResult = {
   kind?: string;
@@ -38,7 +33,11 @@ function MessageParts({ message }: { message: UIMessage }) {
       {message.parts.map((part, index) => {
         const typedPart = part as { type?: string; text?: string };
         if (typedPart.type === 'text' && typedPart.text) {
-          return <p key={`${message.id}-${index}`}>{typedPart.text}</p>;
+          return (
+            <Streamdown key={`${message.id}-${index}`}>
+              {typedPart.text}
+            </Streamdown>
+          );
         }
 
         const result = asToolResult(part);
@@ -98,6 +97,10 @@ function MessageParts({ message }: { message: UIMessage }) {
 export function AskSingapath({ profile }: { profile: Profile }) {
   const transport = useMemo(
     () => new DefaultChatTransport({ api: '/api/chat', body: { profile } }),
+    [profile],
+  );
+  const suggestedQuestions = useMemo(
+    () => buildSuggestedQuestions(profile),
     [profile],
   );
   const {

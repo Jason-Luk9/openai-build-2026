@@ -12,6 +12,7 @@ import { scoreCompass } from './compass-scorer';
 import { matchTaxIncentives } from './tax-matcher';
 import { buildTimeline } from './timeline-builder';
 import {
+  buildSuggestedQuestions,
   checkHeadcountWhatIf,
   checkSalaryWhatIf,
   checkTaxRevenueWhatIf,
@@ -33,6 +34,7 @@ export function buildPlaybookFacts(profile: Profile): PlaybookFacts {
 export {
   assessRisks,
   buildBankingFacts,
+  buildSuggestedQuestions,
   buildTimeline,
   lookupLicenses,
   matchTaxIncentives,
